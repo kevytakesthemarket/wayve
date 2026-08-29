@@ -10,6 +10,7 @@ import {
   extractBullets,
   heuristicScorer,
   isClicheOnly,
+  nextAnswerAction,
   pickFacetQuestion,
   scoreInterview,
 } from './heuristic';
@@ -78,6 +79,27 @@ describe('facet scoring and screen 5', () => {
     assert.equal(pickFacetQuestion(scores), 'club-fit');
   });
 
+  it('asks a third question when both club and friendship are still thin', () => {
+    const state = initialInterviewState();
+    state.energy = 'Doing something next to people (not really with them)';
+    state.belonging = {
+      text: "I'm a good friend.",
+      probed: true,
+      clicheBounced: false,
+      acceptedCliche: false,
+    };
+    state.thursday = {
+      text: 'Went home and slept.',
+      probed: true,
+      clicheBounced: false,
+      acceptedCliche: false,
+    };
+    const scores = scoreInterview(state);
+    assert.ok(scores.clubStayLeave < 2);
+    assert.ok(scores.friendshipShape < 2);
+    assert.equal(pickFacetQuestion(scores), 'club-fit');
+  });
+
   it('skips screen 5 when both club and friendship already look palpable', () => {
     const state = initialInterviewState();
     state.belonging = {
@@ -134,6 +156,18 @@ describe('member-check bullets', () => {
     state.scores = scoreInterview(state);
     const note = emptyFacetNote(state);
     assert.equal(note, "We still don't know what a good Thursday looks like for you.");
+  });
+});
+
+describe('answer gate', () => {
+  it('bounces a cliché once, then accepts it', () => {
+    assert.equal(nextAnswerAction('good vibes', { clicheBounced: false, probed: false }), 'bounce');
+    assert.equal(nextAnswerAction('good vibes', { clicheBounced: true, probed: false }), 'accept');
+  });
+
+  it('probes a thin non-cliché once, then lets them move on', () => {
+    assert.equal(nextAnswerAction("I'm a good friend.", { clicheBounced: false, probed: false }), 'probe');
+    assert.equal(nextAnswerAction("I'm a good friend.", { clicheBounced: false, probed: true }), 'accept');
   });
 });
 

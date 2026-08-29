@@ -50,12 +50,12 @@ export function InterviewProvider({ children }: { children: ReactNode }) {
       ready,
       async completeSignup(input) {
         const result = await auth.completeSignup(input);
-        setState((prev) => ({
-          ...prev,
+        setState({
+          ...initialInterviewState(),
           signup: result,
-          startedAt: prev.startedAt ?? Date.now(),
+          startedAt: Date.now(),
           step: 'taps',
-        }));
+        });
       },
       setTaps(nights, energy) {
         setState((prev) => ({ ...prev, slackNights: nights, energy, step: 'examples' }));

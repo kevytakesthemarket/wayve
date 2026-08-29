@@ -481,6 +481,18 @@ export function emptyFacetNote(state: InterviewState): string | null {
   return null;
 }
 
+export type GateAction = 'bounce' | 'probe' | 'accept';
+
+export function nextAnswerAction(
+  text: string,
+  flags: { clicheBounced: boolean; probed: boolean },
+): GateAction {
+  const analysis = analyzeAnswer(text);
+  if (analysis.isClicheOnly && !flags.clicheBounced) return 'bounce';
+  if (!analysis.hasScene && !analysis.isClicheOnly && !flags.probed) return 'probe';
+  return 'accept';
+}
+
 export const heuristicScorer: InterviewScorer = {
   analyzeAnswer,
   scoreInterview,

@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 18,
     alignItems: 'center',
+    cursor: 'pointer',
   },
   muted: {
     backgroundColor: colors.card,

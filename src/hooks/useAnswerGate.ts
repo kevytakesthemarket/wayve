@@ -1,45 +1,51 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import type { WrittenAnswer } from '@/interview/types';
 import { CLICHE_BOUNCE_COPY } from '@/scoring/cliches';
+import { nextAnswerAction } from '@/scoring/heuristic';
 import { scorer } from '@/scoring';
 
 export function useAnswerGate(probeCopy: string) {
   const [notice, setNotice] = useState<string | null>(null);
-  const [clicheBounced, setClicheBounced] = useState(false);
-  const [probed, setProbed] = useState(false);
+  const flags = useRef({ clicheBounced: false, probed: false });
 
   function resetGate() {
+    flags.current = { clicheBounced: false, probed: false };
     setNotice(null);
-    setClicheBounced(false);
-    setProbed(false);
   }
 
   function submit(text: string, photoUri?: string | null): WrittenAnswer | null {
     const trimmed = text.trim();
     if (!trimmed) return null;
-    const analysis = scorer.analyzeAnswer(trimmed);
+    const action = nextAnswerAction(trimmed, flags.current);
 
-    if (analysis.isClicheOnly && !clicheBounced) {
-      setClicheBounced(true);
+    if (action === 'bounce') {
+      flags.current.clicheBounced = true;
       setNotice(CLICHE_BOUNCE_COPY);
       return null;
     }
 
-    if (!analysis.hasScene && !analysis.isClicheOnly && !probed) {
-      setProbed(true);
+    if (action === 'probe') {
+      flags.current.probed = true;
       setNotice(probeCopy);
       return null;
     }
 
+    const analysis = scorer.analyzeAnswer(trimmed);
     return {
       text: trimmed,
       photoUri: photoUri ?? null,
-      probed,
-      clicheBounced,
+      probed: flags.current.probed,
+      clicheBounced: flags.current.clicheBounced,
       acceptedCliche: analysis.isClicheOnly,
     };
   }
 
-  return { notice, submit, resetGate, clicheBounced, probed };
+  return {
+    notice,
+    submit,
+    resetGate,
+    clicheBounced: flags.current.clicheBounced,
+    probed: flags.current.probed,
+  };
 }

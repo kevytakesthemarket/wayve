@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     marginRight: 8,
     marginBottom: 8,
+    cursor: 'pointer',
   },
   selected: {
     backgroundColor: colors.forest,
