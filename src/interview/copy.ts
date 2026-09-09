@@ -23,10 +23,10 @@ export const COPY = {
     'Realistic this semester: a weekly person, someone from class, or once a month? Tell me the last time a friendship actually fit your week.',
   memberHeader: "This is what we’d match on. Fix anything that’s wrong. Delete anything you don’t want used.",
   memberPrivacy: (school: string) =>
-    `Other students will not see this whole interview. They’ll see a short card you approve next. We use the interview to match you with people and clubs at ${school}.`,
+    `Other students will not see this whole interview. They’ll see a short card you approve next. We use the interview to match you with clubs at ${school} first. People come later, after enough interviews exist.`,
   publicCardLabel: 'Your public card — 1–2 sentences',
   publicCardHint: 'Default is your first two concrete lines. Rewrite in your words if you want. We won’t pretty it up.',
-  unlockLead: 'Here’s a first pass. 3 people, 3 clubs. It gets less random as you get more specific.',
+  unlockLead: 'Here’s a first pass. 3 clubs this week. It gets less random as you get more specific.',
   firstPass: 'FIRST PASS',
   looksRight: 'Looks right',
   edit: 'Edit',

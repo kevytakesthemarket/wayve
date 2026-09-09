@@ -5,11 +5,13 @@ import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { COPY } from '@/interview/copy';
 import { useInterview } from '@/interview/context';
+import { usePlan } from '@/plan/context';
 import { colors, fonts } from '@/theme/colors';
 
 export default function WelcomeScreen() {
   const router = useRouter();
   const { state, reset } = useInterview();
+  const { reset: resetPlan } = usePlan();
   const school = state.signup.schoolName && state.signup.schoolName !== 'your school'
     ? state.signup.schoolName
     : 'your campus';
@@ -28,7 +30,10 @@ export default function WelcomeScreen() {
           <PrimaryButton
             label={hasProgress ? 'Start over' : COPY.welcomeCta}
             onPress={async () => {
-              if (hasProgress) await reset();
+              if (hasProgress) {
+                await resetPlan();
+                await reset();
+              }
               router.push('/signup');
             }}
             muted={!!hasProgress}
@@ -44,7 +49,18 @@ export default function WelcomeScreen() {
   );
 }
 
-function routeForStep(step: string): '/signup' | '/interview/taps' | '/interview/examples' | '/interview/belonging' | '/interview/thursday' | '/interview/facet' | '/interview/member-check' | '/interview/unlock' {
+function routeForStep(
+  step: string,
+):
+  | '/signup'
+  | '/interview/taps'
+  | '/interview/examples'
+  | '/interview/belonging'
+  | '/interview/thursday'
+  | '/interview/facet'
+  | '/interview/member-check'
+  | '/interview/unlock'
+  | '/home' {
   switch (step) {
     case 'taps':
       return '/interview/taps';
@@ -60,6 +76,8 @@ function routeForStep(step: string): '/signup' | '/interview/taps' | '/interview
       return '/interview/member-check';
     case 'unlock':
       return '/interview/unlock';
+    case 'home':
+      return '/home';
     default:
       return '/signup';
   }

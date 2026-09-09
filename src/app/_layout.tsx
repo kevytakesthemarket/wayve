@@ -5,18 +5,21 @@ import { ActivityIndicator, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 
 import { InterviewProvider, useInterview } from '@/interview/context';
+import { PlanProvider, usePlan } from '@/plan/context';
 import { colors } from '@/theme/colors';
 
 SplashScreen.preventAutoHideAsync();
 
 function RootNav() {
   const { ready } = useInterview();
+  const { ready: planReady } = usePlan();
+  const bootReady = ready && planReady;
 
   useEffect(() => {
-    if (ready) SplashScreen.hideAsync();
-  }, [ready]);
+    if (bootReady) SplashScreen.hideAsync();
+  }, [bootReady]);
 
-  if (!ready) {
+  if (!bootReady) {
     return (
       <View style={{ flex: 1, backgroundColor: colors.paper, alignItems: 'center', justifyContent: 'center' }}>
         <ActivityIndicator color={colors.forest} />
@@ -41,7 +44,9 @@ function RootNav() {
 export default function RootLayout() {
   return (
     <InterviewProvider>
-      <RootNav />
+      <PlanProvider>
+        <RootNav />
+      </PlanProvider>
     </InterviewProvider>
   );
 }

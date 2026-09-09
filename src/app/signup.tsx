@@ -7,6 +7,7 @@ import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { COPY } from '@/interview/copy';
 import { useInterview } from '@/interview/context';
+import { usePlan } from '@/plan/context';
 import { looksLikeEmail, schoolFromEmail } from '@/interview/school';
 import { LIVING, YEARS, type Living, type Year } from '@/interview/types';
 import { colors, fonts } from '@/theme/colors';
@@ -14,6 +15,7 @@ import { colors, fonts } from '@/theme/colors';
 export default function SignupScreen() {
   const router = useRouter();
   const { state, completeSignup } = useInterview();
+  const { reset: resetPlan } = usePlan();
   const [email, setEmail] = useState(state.signup.email);
   const [firstName, setFirstName] = useState(state.signup.firstName);
   const [year, setYear] = useState<Year | null>(state.signup.year);
@@ -30,6 +32,7 @@ export default function SignupScreen() {
           disabled={!valid}
           onPress={async () => {
             if (!year || !living) return;
+            await resetPlan();
             await completeSignup({ email, firstName, year, living });
             router.push('/interview/taps');
           }}
