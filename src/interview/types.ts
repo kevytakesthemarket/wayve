@@ -44,7 +44,8 @@ export type InterviewStep =
   | 'thursday'
   | 'facet'
   | 'member-check'
-  | 'unlock';
+  | 'unlock'
+  | 'home';
 
 export interface WrittenAnswer {
   text: string;

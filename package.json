@@ -40,7 +40,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "test": "tsx --test src/scoring/heuristic.test.ts src/interview/school.test.ts",
+    "test": "tsx --test src/scoring/heuristic.test.ts src/interview/school.test.ts src/plan/nextAction.test.ts src/plan/slate.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "private": true

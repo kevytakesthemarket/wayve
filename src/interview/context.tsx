@@ -17,6 +17,7 @@ interface InterviewContextValue {
   setFacet: (answer: WrittenAnswer) => void;
   skipFacet: () => void;
   setSummary: (bullets: string[], publicCard: string) => void;
+  updatePublicCard: (publicCard: string) => void;
   reset: () => Promise<void>;
   markStep: (step: InterviewState['step']) => void;
 }
@@ -116,12 +117,15 @@ export function InterviewProvider({ children }: { children: ReactNode }) {
           step: 'unlock',
         }));
       },
+      updatePublicCard(publicCard) {
+        setState((prev) => ({ ...prev, publicCard: publicCard.trim() }));
+      },
       async reset() {
         await clearInterview();
         setState(initialInterviewState());
       },
       markStep(step) {
-        setState((prev) => ({ ...prev, step }));
+        setState((prev) => (prev.step === step ? prev : { ...prev, step }));
       },
     }),
     [ready, state],
