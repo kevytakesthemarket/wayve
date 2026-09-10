@@ -79,7 +79,7 @@ export default function MemberCheckScreen() {
         </Pressable>
       </View>
 
-      <Card>
+      <Card variant="form">
         {bullets.map((bullet, index) => (
           <View key={index} style={styles.bulletRow}>
             <Text style={styles.dash}>•</Text>

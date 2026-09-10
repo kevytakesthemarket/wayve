@@ -32,7 +32,7 @@ export default function PublicCardScreen() {
       }
     >
       <TextLink label="Back" onPress={() => router.back()} />
-      <Card>
+      <Card variant="form">
         <Heading size="md">{PLAN_COPY.cardTitle}</Heading>
         <Text style={styles.privacy}>{PLAN_COPY.cardPrivacy}</Text>
         <Text style={styles.hint}>{PLAN_COPY.cardHint}</Text>

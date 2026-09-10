@@ -69,6 +69,7 @@ export const fonts = Platform.select({
 export const radii = {
   xl: 12,
   '2xl': 16,
+  '3xl': 24,
 } as const;
 
 export const titleStyle: TextStyle = {
@@ -94,13 +95,15 @@ export const inputStyle: TextStyle = {
   borderWidth: 1,
   borderColor: colors.inputBorder,
   borderRadius: radii.xl,
-  paddingHorizontal: 14,
+  paddingHorizontal: 16,
   paddingVertical: 12,
+  minHeight: 44,
   fontFamily: fonts.sans,
   fontSize: 16,
   color: colors.body,
 };
 
+/** Welcome / club cards: black + 2px purple-500, rounded-2xl */
 export const cardStyle: ViewStyle = {
   backgroundColor: colors.surface,
   borderRadius: radii['2xl'],
@@ -112,6 +115,24 @@ export const cardStyle: ViewStyle = {
       borderWidth: 2,
       borderStyle: 'solid',
       borderColor: colors.chromeBorder,
+    },
+  }),
+};
+
+/** Sign-in / sign-up cards: floating black, no purple ring, rounded-3xl */
+export const formCardStyle: ViewStyle = {
+  backgroundColor: colors.surface,
+  borderRadius: radii['3xl'],
+  ...Platform.select({
+    web: {
+      boxShadow: '0 18px 40px rgba(0, 0, 0, 0.45)',
+    },
+    default: {
+      shadowColor: '#000',
+      shadowOpacity: 0.4,
+      shadowRadius: 18,
+      shadowOffset: { width: 0, height: 10 },
+      elevation: 10,
     },
   }),
 };

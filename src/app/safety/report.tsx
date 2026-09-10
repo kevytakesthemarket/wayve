@@ -53,7 +53,7 @@ export default function ReportScreen() {
       {person ? <Text style={styles.club}>{person.name}</Text> : null}
       {club ? <Text style={styles.club}>{club.name}</Text> : null}
 
-      <Card>
+      <Card variant="form">
         {done ? (
           <Text style={styles.done}>{PLAN_COPY.reportDone}</Text>
         ) : (

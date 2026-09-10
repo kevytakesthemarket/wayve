@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   header: {
-    width: 280,
-    height: 72,
+    width: 300,
+    height: 80,
   },
   lg: {
     width: 280,

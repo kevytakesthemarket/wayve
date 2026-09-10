@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import { LinearGradient } from 'expo-linear-gradient';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -9,6 +8,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { HalftoneCanvas } from '@/components/HalftoneCanvas';
 import { WayveMark } from '@/components/WayveMark';
 import { colors } from '@/theme/colors';
 
@@ -16,22 +16,23 @@ export function Screen({
   children,
   footer,
   extraBottom = 24,
+  centered = false,
 }: {
   children: ReactNode;
   footer?: ReactNode;
   extraBottom?: number;
+  centered?: boolean;
 }) {
   return (
     <View style={styles.root}>
-      <LinearGradient
-        colors={[colors.canvasFrom, colors.canvasTo]}
-        start={{ x: 0.5, y: 0 }}
-        end={{ x: 0.5, y: 1 }}
-        style={StyleSheet.absoluteFill}
-      />
+      <HalftoneCanvas />
       <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
         <View style={styles.header}>
-          <WayveMark size="header" />
+          <View style={styles.headerSide} />
+          <View style={styles.headerCenter}>
+            <WayveMark size="header" />
+          </View>
+          <View style={styles.headerSide} />
         </View>
         <View style={styles.headerRule} />
         <KeyboardAvoidingView
@@ -39,7 +40,11 @@ export function Screen({
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         >
           <ScrollView
-            contentContainerStyle={[styles.content, { paddingBottom: extraBottom }]}
+            contentContainerStyle={[
+              styles.content,
+              centered && styles.centered,
+              { paddingBottom: extraBottom },
+            ]}
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           >
@@ -67,22 +72,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   header: {
-    height: 88,
+    height: 96,
     backgroundColor: colors.chrome,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+  },
+  headerSide: {
+    width: 56,
+  },
+  headerCenter: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    ...Platform.select({
-      web: {
-        boxShadow: '0 4px 16px rgba(168, 85, 247, 0.35)',
-      },
-      default: {
-        shadowColor: colors.chromeBorder,
-        shadowOpacity: 0.35,
-        shadowRadius: 10,
-        shadowOffset: { width: 0, height: 4 },
-        elevation: 8,
-      },
-    }),
   },
   headerRule: {
     height: 2,
@@ -98,23 +100,16 @@ const styles = StyleSheet.create({
     maxWidth: 448,
     alignSelf: 'center',
     paddingHorizontal: 16,
-    paddingTop: 20,
+    paddingTop: 24,
     gap: 16,
+  },
+  centered: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    paddingBottom: 48,
   },
   footerBar: {
     backgroundColor: colors.chrome,
-    ...Platform.select({
-      web: {
-        boxShadow: '0 -3px 12px rgba(168, 85, 247, 0.3)',
-      },
-      default: {
-        shadowColor: colors.chromeBorder,
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-        shadowOffset: { width: 0, height: -3 },
-        elevation: 8,
-      },
-    }),
   },
   footerRule: {
     height: 2,

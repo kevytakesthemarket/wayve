@@ -46,7 +46,7 @@ export default function FacetScreen() {
       }
     >
       <InterviewChrome step={5} total={6} startedAt={state.startedAt} onBack={() => router.back()} />
-      <Card>
+      <Card variant="form">
         <Heading size="md">{prompt}</Heading>
         <ExpandingText
           value={text}

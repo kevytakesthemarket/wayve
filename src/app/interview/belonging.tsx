@@ -55,7 +55,7 @@ export default function BelongingScreen() {
       }
     >
       <InterviewChrome step={3} total={6} startedAt={state.startedAt} onBack={() => router.back()} />
-      <Card>
+      <Card variant="form">
         <Heading size="md">{COPY.belongingQ}</Heading>
         <Text style={styles.helper}>{COPY.belongingHelper}</Text>
         <ExpandingText

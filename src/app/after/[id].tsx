@@ -62,7 +62,7 @@ export default function AfterVisitScreen() {
 
       {commitment ? <Text style={styles.committed}>{commitment.nextAction}</Text> : null}
 
-      <Card>
+      <Card variant="form">
         <Text style={styles.q}>{PLAN_COPY.stayQ}</Text>
         <Text style={styles.tag}>stay_past_15</Text>
         <View style={styles.wrap}>

@@ -54,7 +54,7 @@ export default function TapsScreen() {
           router.back();
         }}
       />
-      <Card>
+      <Card variant="form">
         <Heading size="md">{COPY.tapsLead}</Heading>
         <Text style={styles.helper}>{COPY.tapsHelper}</Text>
 

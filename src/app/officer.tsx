@@ -6,7 +6,6 @@ import { Card } from '@/components/Card';
 import { ChoiceChip } from '@/components/ChoiceChip';
 import { ExpandingText } from '@/components/ExpandingText';
 import { Field } from '@/components/Field';
-import { Heading } from '@/components/Heading';
 import { Notice } from '@/components/Notice';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
@@ -66,12 +65,11 @@ export default function OfficerIntakeScreen() {
       }
     >
       <TextLink label="Back" onPress={() => router.back()} />
-      <Heading>{PLAN_COPY.officerTitle}</Heading>
       <Text style={styles.lead}>{PLAN_COPY.officerLead}</Text>
 
       {listed ? <Notice text={PLAN_COPY.officerListed} /> : null}
 
-      <Card>
+      <Card variant="form" title="List a room">
         <Field
           label={PLAN_COPY.officerName}
           value={draft.name}

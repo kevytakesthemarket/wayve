@@ -49,7 +49,7 @@ export default function BlockScreen() {
       <TextLink label="Back" onPress={() => router.back()} />
       <Heading>{PLAN_COPY.blockTitle}</Heading>
       <Text style={styles.lead}>{lead}</Text>
-      <Card>
+      <Card variant="form">
         {person ? <Text style={styles.club}>{person.name}</Text> : null}
         {club ? <Text style={styles.club}>{club.name}</Text> : null}
         {done ? <Text style={styles.done}>{doneCopy}</Text> : null}

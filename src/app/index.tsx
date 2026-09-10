@@ -2,7 +2,6 @@ import { useRouter } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Card } from '@/components/Card';
-import { Heading } from '@/components/Heading';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { COPY } from '@/interview/copy';
@@ -20,11 +19,8 @@ export default function WelcomeScreen() {
   const hasProgress = state.step !== 'welcome' && (state.signup.firstName || state.startedAt);
 
   return (
-    <Screen>
-      <Card>
-        <Heading size="xl" align="center">
-          Welcome To Wayve
-        </Heading>
+    <Screen centered>
+      <Card title="Welcome To Wayve">
         <Text style={styles.kicker}>{COPY.welcomeKicker}</Text>
         <Text style={styles.line}>{COPY.friendsNotDating(school)}</Text>
         <Text style={styles.body}>{COPY.welcomeBody}</Text>
@@ -98,7 +94,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.sans,
     fontSize: 14,
     lineHeight: 22,
-    color: colors.muted,
+    color: colors.body,
     textAlign: 'center',
   },
   body: {

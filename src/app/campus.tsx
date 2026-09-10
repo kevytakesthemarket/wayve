@@ -38,7 +38,7 @@ export default function CampusSettingsScreen() {
       <Heading>{PLAN_COPY.campusTitle}</Heading>
       <Text style={styles.lead}>{PLAN_COPY.campusLead}</Text>
 
-      <Card>
+      <Card variant="form">
         <Text style={styles.statLabel}>Interview corpus (mock)</Text>
         <Text style={styles.statValue}>
           {campus.interviewCount} / ~{PEOPLE_GATE_MIN_INTERVIEWS}

@@ -5,7 +5,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Card } from '@/components/Card';
 import { ChoiceChip } from '@/components/ChoiceChip';
 import { Field } from '@/components/Field';
-import { Heading } from '@/components/Heading';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { COPY } from '@/interview/copy';
@@ -30,6 +29,8 @@ export default function SignupScreen() {
 
   return (
     <Screen
+      centered
+      extraBottom={32}
       footer={
         <PrimaryButton
           label={COPY.continue}
@@ -43,9 +44,9 @@ export default function SignupScreen() {
         />
       }
     >
-      <Card>
-        <Heading size="md">School email, first name, year, and whether you live on campus.</Heading>
+      <Card variant="form" title="Your campus">
         <Text style={styles.line}>{COPY.friendsNotDating(school)}</Text>
+        <Text style={styles.helper}>School email, first name, year, and whether you live on campus.</Text>
 
         <Field
           label="School email"
@@ -94,16 +95,24 @@ export default function SignupScreen() {
 const styles = StyleSheet.create({
   line: {
     fontFamily: fonts.sans,
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: 22,
-    color: colors.accent,
+    color: colors.body,
+    textAlign: 'center',
+  },
+  helper: {
+    fontFamily: fonts.sans,
+    fontSize: 14,
+    lineHeight: 20,
+    color: colors.muted,
+    textAlign: 'center',
   },
   label: {
     fontFamily: fonts.sans,
     fontSize: 13,
     fontWeight: '600',
     color: colors.muted,
-    marginTop: 8,
+    marginTop: 4,
   },
   wrap: {
     flexDirection: 'row',

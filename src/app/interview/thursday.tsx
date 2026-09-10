@@ -37,7 +37,7 @@ export default function ThursdayScreen() {
       }
     >
       <InterviewChrome step={4} total={6} startedAt={state.startedAt} onBack={() => router.back()} />
-      <Card>
+      <Card variant="form">
         <Heading size="md">{COPY.thursdayQ}</Heading>
         <Text style={styles.helper}>{COPY.thursdayHelper}</Text>
         <ExpandingText
