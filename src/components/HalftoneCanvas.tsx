@@ -11,7 +11,7 @@ const dots = require('../../assets/images/halftone-dots.png');
  */
 export function HalftoneCanvas() {
   return (
-    <View style={StyleSheet.absoluteFill} pointerEvents="none">
+    <View style={[StyleSheet.absoluteFill, styles.ignore]}>
       <LinearGradient
         colors={[colors.canvasFrom, colors.canvasTo]}
         start={{ x: 0.5, y: 0 }}
@@ -32,9 +32,12 @@ export function HalftoneCanvas() {
 }
 
 const styles = StyleSheet.create({
+  ignore: {
+    pointerEvents: 'none',
+  },
   webDots: {
     backgroundImage:
-      'radial-gradient(rgba(216, 180, 254, 0.32) 1.25px, transparent 1.35px)',
-    backgroundSize: '12px 12px',
+      'radial-gradient(rgba(216, 180, 254, 0.42) 2.1px, transparent 2.25px)',
+    backgroundSize: '14px 14px',
   } as Record<string, string>,
 });
