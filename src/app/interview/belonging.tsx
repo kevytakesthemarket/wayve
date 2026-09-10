@@ -3,7 +3,9 @@ import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { Card } from '@/components/Card';
 import { ExpandingText } from '@/components/ExpandingText';
+import { Heading } from '@/components/Heading';
 import { InterviewChrome } from '@/components/InterviewChrome';
 import { Notice } from '@/components/Notice';
 import { PrimaryButton } from '@/components/PrimaryButton';
@@ -12,7 +14,7 @@ import { useAnswerGate } from '@/hooks/useAnswerGate';
 import { COPY } from '@/interview/copy';
 import { useInterview } from '@/interview/context';
 import { PROBE_BELONGING } from '@/scoring/cliches';
-import { colors, fonts } from '@/theme/colors';
+import { colors, fonts, radii } from '@/theme/colors';
 
 export default function BelongingScreen() {
   const router = useRouter();
@@ -53,40 +55,36 @@ export default function BelongingScreen() {
       }
     >
       <InterviewChrome step={3} total={6} startedAt={state.startedAt} onBack={() => router.back()} />
-      <Text style={styles.q}>{COPY.belongingQ}</Text>
-      <Text style={styles.helper}>{COPY.belongingHelper}</Text>
-      <ExpandingText
-        value={text}
-        onChangeText={(value) => {
-          setText(value);
-          if (value.trim()) setPhotoNote(null);
-        }}
-        placeholder="A night or afternoon. Where were you. What was happening."
-      />
-      <Pressable onPress={pickPhoto} accessibilityRole="button">
-        <Text style={styles.photo}>{COPY.photoAlt}</Text>
-      </Pressable>
-      {photoUri ? (
-        <View style={styles.previewWrap}>
-          <Image source={{ uri: photoUri }} style={styles.preview} />
-          <Pressable onPress={() => setPhotoUri(null)}>
-            <Text style={styles.remove}>Remove photo</Text>
-          </Pressable>
-        </View>
-      ) : null}
-      {photoNote ? <Notice text={photoNote} /> : null}
-      {notice ? <Notice text={notice} /> : null}
+      <Card>
+        <Heading size="md">{COPY.belongingQ}</Heading>
+        <Text style={styles.helper}>{COPY.belongingHelper}</Text>
+        <ExpandingText
+          value={text}
+          onChangeText={(value) => {
+            setText(value);
+            if (value.trim()) setPhotoNote(null);
+          }}
+          placeholder="A night or afternoon. Where were you. What was happening."
+        />
+        <Pressable onPress={pickPhoto} accessibilityRole="button">
+          <Text style={styles.photo}>{COPY.photoAlt}</Text>
+        </Pressable>
+        {photoUri ? (
+          <View style={styles.previewWrap}>
+            <Image source={{ uri: photoUri }} style={styles.preview} />
+            <Pressable onPress={() => setPhotoUri(null)}>
+              <Text style={styles.remove}>Remove photo</Text>
+            </Pressable>
+          </View>
+        ) : null}
+        {photoNote ? <Notice text={photoNote} /> : null}
+        {notice ? <Notice text={notice} /> : null}
+      </Card>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  q: {
-    fontFamily: fonts.serif,
-    fontSize: 24,
-    lineHeight: 32,
-    color: colors.ink,
-  },
   helper: {
     fontFamily: fonts.sans,
     fontSize: 15,
@@ -96,8 +94,9 @@ const styles = StyleSheet.create({
   photo: {
     fontFamily: fonts.sans,
     fontSize: 15,
-    color: colors.forest,
+    color: colors.link,
     fontWeight: '600',
+    textDecorationLine: 'underline',
   },
   previewWrap: {
     gap: 8,
@@ -105,12 +104,12 @@ const styles = StyleSheet.create({
   preview: {
     width: '100%',
     height: 160,
-    borderRadius: 12,
-    backgroundColor: colors.paperDeep,
+    borderRadius: radii.xl,
+    backgroundColor: colors.surfaceMuted,
   },
   remove: {
     fontFamily: fonts.sans,
     fontSize: 13,
-    color: colors.muted,
+    color: colors.hint,
   },
 });

@@ -7,7 +7,7 @@ export default function InterviewLayout() {
     <Stack
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: colors.paper },
+        contentStyle: { backgroundColor: colors.canvasTo },
         animation: 'slide_from_right',
       }}
     />

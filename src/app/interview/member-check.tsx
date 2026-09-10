@@ -2,13 +2,15 @@ import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
+import { Card } from '@/components/Card';
+import { Heading } from '@/components/Heading';
 import { InterviewChrome } from '@/components/InterviewChrome';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { COPY } from '@/interview/copy';
 import { useInterview } from '@/interview/context';
 import { defaultPublicCard, scorer } from '@/scoring';
-import { colors, fonts } from '@/theme/colors';
+import { colors, fonts, inputStyle, radii } from '@/theme/colors';
 
 export default function MemberCheckScreen() {
   const router = useRouter();
@@ -66,7 +68,7 @@ export default function MemberCheckScreen() {
       }
     >
       <InterviewChrome step={6} total={6} startedAt={state.startedAt} onBack={() => router.back()} />
-      <Text style={styles.q}>{COPY.memberHeader}</Text>
+      <Heading size="md">{COPY.memberHeader}</Heading>
 
       <View style={styles.row}>
         <Pressable onPress={() => setEditing(false)} style={[styles.toggle, !editing && styles.toggleOn]}>
@@ -77,29 +79,32 @@ export default function MemberCheckScreen() {
         </Pressable>
       </View>
 
-      {bullets.map((bullet, index) => (
-        <View key={index} style={styles.bulletRow}>
-          <Text style={styles.dash}>•</Text>
-          {editing ? (
-            <TextInput
-              value={bullet}
-              onChangeText={(value) => updateBullet(index, value)}
-              multiline
-              style={styles.bulletInput}
-            />
-          ) : (
-            <Text style={styles.bulletText}>{bullet}</Text>
-          )}
-        </View>
-      ))}
+      <Card>
+        {bullets.map((bullet, index) => (
+          <View key={index} style={styles.bulletRow}>
+            <Text style={styles.dash}>•</Text>
+            {editing ? (
+              <TextInput
+                value={bullet}
+                onChangeText={(value) => updateBullet(index, value)}
+                multiline
+                placeholderTextColor={colors.placeholder}
+                style={styles.bulletInput}
+              />
+            ) : (
+              <Text style={styles.bulletText}>{bullet}</Text>
+            )}
+          </View>
+        ))}
 
-      {editing && bullets.length < 6 ? (
-        <Pressable onPress={addBullet}>
-          <Text style={styles.link}>Add a line — your words only</Text>
-        </Pressable>
-      ) : null}
+        {editing && bullets.length < 6 ? (
+          <Pressable onPress={addBullet}>
+            <Text style={styles.link}>Add a line — your words only</Text>
+          </Pressable>
+        ) : null}
 
-      <Text style={styles.privacy}>{COPY.memberPrivacy(school)}</Text>
+        <Text style={styles.privacy}>{COPY.memberPrivacy(school)}</Text>
+      </Card>
 
       <Text style={styles.label}>{COPY.publicCardLabel}</Text>
       <Text style={styles.helper}>{COPY.publicCardHint}</Text>
@@ -127,14 +132,14 @@ export default function MemberCheckScreen() {
           onChangeText={setCustomCard}
           multiline
           placeholder="Your words. We will not rewrite them."
-          placeholderTextColor={colors.hint}
+          placeholderTextColor={colors.placeholder}
           style={styles.custom}
         />
       ) : (
-        <View style={styles.preview}>
+        <Card>
           <Text style={styles.previewLabel}>Card preview</Text>
           <Text style={styles.previewBody}>{card}</Text>
-        </View>
+        </Card>
       )}
     </Screen>
   );
@@ -152,36 +157,30 @@ function defaultSelected(bullets: string[]): number[] {
 }
 
 const styles = StyleSheet.create({
-  q: {
-    fontFamily: fonts.serif,
-    fontSize: 22,
-    lineHeight: 30,
-    color: colors.ink,
-  },
   row: {
     flexDirection: 'row',
     gap: 8,
   },
   toggle: {
-    borderRadius: 20,
+    borderRadius: 999,
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: colors.inputBorder,
     paddingHorizontal: 14,
     paddingVertical: 8,
-    backgroundColor: colors.card,
+    backgroundColor: colors.surfaceMuted,
   },
   toggleOn: {
-    backgroundColor: colors.forest,
-    borderColor: colors.forest,
+    backgroundColor: colors.primaryFrom,
+    borderColor: colors.accentStrong,
   },
   toggleText: {
     fontFamily: fonts.sans,
     fontSize: 14,
-    color: colors.ink,
+    color: colors.body,
     fontWeight: '600',
   },
   toggleTextOn: {
-    color: colors.cream,
+    color: colors.body,
   },
   bulletRow: {
     flexDirection: 'row',
@@ -191,7 +190,7 @@ const styles = StyleSheet.create({
   dash: {
     fontFamily: fonts.serif,
     fontSize: 18,
-    color: colors.forest,
+    color: colors.accent,
     marginTop: 2,
   },
   bulletText: {
@@ -199,20 +198,13 @@ const styles = StyleSheet.create({
     fontFamily: fonts.sans,
     fontSize: 16,
     lineHeight: 23,
-    color: colors.ink,
+    color: colors.body,
   },
   bulletInput: {
+    ...inputStyle,
     flex: 1,
-    fontFamily: fonts.sans,
-    fontSize: 16,
-    lineHeight: 23,
-    color: colors.ink,
-    backgroundColor: colors.card,
-    borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: 10,
-    padding: 10,
     minHeight: 48,
+    paddingVertical: 10,
   },
   privacy: {
     fontFamily: fonts.sans,
@@ -225,7 +217,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.sans,
     fontSize: 15,
     fontWeight: '700',
-    color: colors.ink,
+    color: colors.body,
     marginTop: 8,
   },
   helper: {
@@ -236,48 +228,35 @@ const styles = StyleSheet.create({
   },
   pick: {
     borderWidth: 1,
-    borderColor: colors.line,
-    backgroundColor: colors.card,
-    borderRadius: 12,
+    borderColor: colors.inputBorder,
+    backgroundColor: colors.surfaceMuted,
+    borderRadius: radii.xl,
     padding: 12,
   },
   pickOn: {
-    borderColor: colors.forest,
-    backgroundColor: colors.paperDeep,
+    borderColor: colors.accentStrong,
+    backgroundColor: colors.surface,
   },
   pickText: {
     fontFamily: fonts.sans,
     fontSize: 15,
     lineHeight: 21,
-    color: colors.ink,
+    color: colors.body,
   },
   pickTextOn: {
-    color: colors.ink,
+    color: colors.body,
   },
   link: {
     fontFamily: fonts.sans,
     fontSize: 15,
-    color: colors.forest,
+    color: colors.link,
     fontWeight: '600',
+    textDecorationLine: 'underline',
   },
   custom: {
+    ...inputStyle,
     minHeight: 100,
-    backgroundColor: colors.card,
-    borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: 12,
-    padding: 12,
-    fontFamily: fonts.sans,
-    fontSize: 16,
-    color: colors.ink,
-  },
-  preview: {
-    backgroundColor: colors.card,
-    borderRadius: 12,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: colors.line,
-    gap: 6,
+    textAlignVertical: 'top',
   },
   previewLabel: {
     fontFamily: fonts.sans,
@@ -289,8 +268,9 @@ const styles = StyleSheet.create({
   },
   previewBody: {
     fontFamily: fonts.serif,
+    fontStyle: 'italic',
     fontSize: 16,
     lineHeight: 24,
-    color: colors.ink,
+    color: colors.body,
   },
 });

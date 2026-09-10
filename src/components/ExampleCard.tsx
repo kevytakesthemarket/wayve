@@ -1,36 +1,27 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 
-import { colors, fonts } from '@/theme/colors';
+import { Card } from '@/components/Card';
+import { colors, fonts, titleStyle } from '@/theme/colors';
 
 export function ExampleCard({ label, body }: { label: string; body: string }) {
   return (
-    <View style={styles.card}>
+    <Card>
       <Text style={styles.label}>{label}</Text>
       <Text style={styles.body}>{body}</Text>
-    </View>
+    </Card>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: colors.card,
-    borderRadius: 16,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: colors.line,
-    gap: 8,
-  },
   label: {
-    fontFamily: fonts.sans,
-    fontSize: 13,
-    fontWeight: '600',
-    color: colors.forest,
-    letterSpacing: 0.2,
+    ...titleStyle,
+    fontSize: 16,
+    lineHeight: 22,
   },
   body: {
-    fontFamily: fonts.serif,
+    fontFamily: fonts.sans,
     fontSize: 16,
     lineHeight: 24,
-    color: colors.ink,
+    color: colors.body,
   },
 });

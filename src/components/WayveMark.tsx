@@ -1,28 +1,35 @@
-import { StyleSheet, Text } from 'react-native';
+import { Image } from 'expo-image';
+import { StyleSheet } from 'react-native';
 
-import { colors, fonts } from '@/theme/colors';
+const logo = require('../../assets/images/wayve-logo-script.png');
 
-export function WayveMark({ size = 'lg' }: { size?: 'lg' | 'md' }) {
+export function WayveMark({ size = 'lg' }: { size?: 'lg' | 'md' | 'header' }) {
   return (
-    <Text style={[styles.mark, size === 'md' && styles.md]} accessibilityRole="header">
-      Wayve
-    </Text>
+    <Image
+      source={logo}
+      style={[styles.base, styles[size]]}
+      contentFit="contain"
+      accessibilityLabel="Wayve"
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  mark: {
-    marginTop: 36,
-    fontFamily: fonts.serif,
-    fontStyle: 'italic',
-    fontSize: 52,
-    lineHeight: 58,
-    color: colors.forest,
-    letterSpacing: 0.4,
+  base: {
+    alignSelf: 'center',
+  },
+  header: {
+    width: 260,
+    height: 64,
+  },
+  lg: {
+    width: 280,
+    height: 92,
+    marginTop: 8,
   },
   md: {
-    marginTop: 8,
-    fontSize: 32,
-    lineHeight: 38,
+    width: 200,
+    height: 56,
+    marginTop: 4,
   },
 });

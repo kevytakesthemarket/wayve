@@ -1,13 +1,12 @@
 import { useRouter } from 'expo-router';
-import { StyleSheet, Text } from 'react-native';
 
 import { ExampleCard } from '@/components/ExampleCard';
+import { Heading } from '@/components/Heading';
 import { InterviewChrome } from '@/components/InterviewChrome';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { COPY, EXAMPLE_PROFILES } from '@/interview/copy';
 import { useInterview } from '@/interview/context';
-import { colors, fonts } from '@/theme/colors';
 
 export default function ExamplesScreen() {
   const router = useRouter();
@@ -31,20 +30,10 @@ export default function ExamplesScreen() {
         startedAt={state.startedAt}
         onBack={() => router.back()}
       />
-      <Text style={styles.q}>{COPY.examplesCaption}</Text>
+      <Heading size="md">{COPY.examplesCaption}</Heading>
       {EXAMPLE_PROFILES.map((card) => (
         <ExampleCard key={card.label} label={card.label} body={card.body} />
       ))}
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  q: {
-    fontFamily: fonts.serif,
-    fontSize: 24,
-    lineHeight: 32,
-    color: colors.ink,
-    marginBottom: 4,
-  },
-});

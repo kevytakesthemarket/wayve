@@ -15,10 +15,11 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     letterSpacing: 1.2,
     color: colors.firstPass,
+    backgroundColor: colors.surfaceMuted,
     borderWidth: 1,
     borderColor: colors.firstPass,
     paddingHorizontal: 8,
     paddingVertical: 4,
-    borderRadius: 6,
+    borderRadius: 999,
   },
 });

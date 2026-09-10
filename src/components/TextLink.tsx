@@ -23,11 +23,12 @@ const styles = StyleSheet.create({
     fontFamily: fonts.sans,
     fontSize: 15,
     lineHeight: 22,
-    color: colors.forest,
+    color: colors.link,
     fontWeight: '600',
+    textDecorationLine: 'underline',
   },
   muted: {
-    color: colors.muted,
+    color: colors.hint,
     fontWeight: '500',
   },
 });

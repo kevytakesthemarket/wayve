@@ -4,7 +4,7 @@ Campus friends + clubs for college students. Not dating.
 
 This repo is the v1 Expo app Kevin can tap through in Expo Go: school-email gate, first-session interview, clubs-only weekly plan, I'll go → if-then, day-of reminder, after-visit, report/block. An interview stays private. Other students only see a short public card the student edits. A later LLM can swap in for matching; v1 scores locally so it works offline. Club commitments are local too, with a swap point for Supabase later.
 
-Visual: dark campus canvas, purple accents (wayve.bio palette) — still friends+clubs, not FreedomFest / dating chrome.
+Visual: wayve.bio chrome (purple→blue canvas, zinc header/footer, script logo, Georgia italic titles, gradient CTAs) — still friends+clubs, not FreedomFest / dating chrome.
 
 The leftover `halftone-waves-app.zip` on `main` is unused. Ignore it.
 

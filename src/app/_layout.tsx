@@ -21,8 +21,8 @@ function RootNav() {
 
   if (!bootReady) {
     return (
-      <View style={{ flex: 1, backgroundColor: colors.paper, alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator color={colors.forest} />
+      <View style={{ flex: 1, backgroundColor: colors.canvasTo, alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator color={colors.accentStrong} />
       </View>
     );
   }
@@ -33,7 +33,7 @@ function RootNav() {
       <Stack
         screenOptions={{
           headerShown: false,
-          contentStyle: { backgroundColor: colors.paper },
+          contentStyle: { backgroundColor: colors.canvasTo },
           animation: 'slide_from_right',
         }}
       />

@@ -1,6 +1,6 @@
 import { StyleSheet, TextInput } from 'react-native';
 
-import { colors, fonts } from '@/theme/colors';
+import { colors, inputStyle } from '@/theme/colors';
 
 export function ExpandingText({
   value,
@@ -16,7 +16,7 @@ export function ExpandingText({
       value={value}
       onChangeText={onChangeText}
       placeholder={placeholder}
-      placeholderTextColor={colors.hint}
+      placeholderTextColor={colors.placeholder}
       multiline
       textAlignVertical="top"
       scrollEnabled
@@ -29,18 +29,12 @@ export function ExpandingText({
 
 const styles = StyleSheet.create({
   input: {
+    ...inputStyle,
     minHeight: 168,
     maxHeight: 320,
-    backgroundColor: colors.card,
-    borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: 16,
-    paddingHorizontal: 16,
     paddingTop: 14,
     paddingBottom: 14,
-    fontFamily: fonts.sans,
     fontSize: 17,
     lineHeight: 24,
-    color: colors.ink,
   },
 });

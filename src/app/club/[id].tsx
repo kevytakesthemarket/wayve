@@ -1,8 +1,9 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { ClubCard } from '@/components/ClubCard';
 import { FirstPassBadge } from '@/components/FirstPassBadge';
+import { Heading } from '@/components/Heading';
 import { Screen } from '@/components/Screen';
 import { TextLink } from '@/components/TextLink';
 import { useInterview } from '@/interview/context';
@@ -10,7 +11,6 @@ import { PLAN_COPY } from '@/plan/copy';
 import { usePlan } from '@/plan/context';
 import { buildNextAction } from '@/plan/nextAction';
 import { personById, type PersonRow } from '@/plan/people';
-import { colors, fonts } from '@/theme/colors';
 
 export default function ClubDetailScreen() {
   const router = useRouter();
@@ -23,7 +23,7 @@ export default function ClubDetailScreen() {
     return (
       <Screen>
         <TextLink label="Back" onPress={() => router.back()} />
-        <Text style={styles.missing}>This club is not on your plan.</Text>
+        <Heading size="md">This club is not on your plan.</Heading>
       </Screen>
     );
   }
@@ -65,12 +65,6 @@ export default function ClubDetailScreen() {
 }
 
 const styles = StyleSheet.create({
-  missing: {
-    fontFamily: fonts.serif,
-    fontSize: 22,
-    lineHeight: 30,
-    color: colors.ink,
-  },
   links: {
     gap: 10,
   },

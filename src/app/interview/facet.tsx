@@ -1,8 +1,9 @@
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
 
+import { Card } from '@/components/Card';
 import { ExpandingText } from '@/components/ExpandingText';
+import { Heading } from '@/components/Heading';
 import { InterviewChrome } from '@/components/InterviewChrome';
 import { Notice } from '@/components/Notice';
 import { PrimaryButton } from '@/components/PrimaryButton';
@@ -11,7 +12,6 @@ import { useAnswerGate } from '@/hooks/useAnswerGate';
 import { COPY } from '@/interview/copy';
 import { useInterview } from '@/interview/context';
 import { PROBE_FACET } from '@/scoring/cliches';
-import { colors, fonts } from '@/theme/colors';
 
 export default function FacetScreen() {
   const router = useRouter();
@@ -46,26 +46,19 @@ export default function FacetScreen() {
       }
     >
       <InterviewChrome step={5} total={6} startedAt={state.startedAt} onBack={() => router.back()} />
-      <Text style={styles.q}>{prompt}</Text>
-      <ExpandingText
-        value={text}
-        onChangeText={setText}
-        placeholder={
-          question === 'club-fit'
-            ? 'Stay past 15 minutes if… Leave if…'
-            : 'Weekly, from class, or once a month — and the last time it actually fit.'
-        }
-      />
-      {notice ? <Notice text={notice} /> : null}
+      <Card>
+        <Heading size="md">{prompt}</Heading>
+        <ExpandingText
+          value={text}
+          onChangeText={setText}
+          placeholder={
+            question === 'club-fit'
+              ? 'Stay past 15 minutes if… Leave if…'
+              : 'Weekly, from class, or once a month — and the last time it actually fit.'
+          }
+        />
+        {notice ? <Notice text={notice} /> : null}
+      </Card>
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  q: {
-    fontFamily: fonts.serif,
-    fontSize: 24,
-    lineHeight: 32,
-    color: colors.ink,
-  },
-});
