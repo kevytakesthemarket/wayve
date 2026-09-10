@@ -33,6 +33,7 @@ export function Screen({
         <View style={styles.header}>
           <WayveMark size="header" />
         </View>
+        <View style={styles.headerRule} />
         <KeyboardAvoidingView
           style={styles.flex}
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -46,6 +47,7 @@ export function Screen({
           </ScrollView>
           {footer ? (
             <View style={styles.footerBar}>
+              <View style={styles.footerRule} />
               <View style={styles.footerInner}>{footer}</View>
             </View>
           ) : null}
@@ -65,17 +67,27 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   header: {
-    height: 80,
+    height: 88,
     backgroundColor: colors.chrome,
-    borderBottomWidth: 2,
-    borderBottomColor: colors.chromeBorder,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: colors.chromeBorder,
-    shadowOpacity: 0.35,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 8,
+    ...Platform.select({
+      web: {
+        boxShadow: '0 4px 16px rgba(168, 85, 247, 0.35)',
+      },
+      default: {
+        shadowColor: colors.chromeBorder,
+        shadowOpacity: 0.35,
+        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 8,
+      },
+    }),
+  },
+  headerRule: {
+    height: 2,
+    width: '100%',
+    backgroundColor: colors.chromeBorder,
   },
   flex: {
     flex: 1,
@@ -91,13 +103,23 @@ const styles = StyleSheet.create({
   },
   footerBar: {
     backgroundColor: colors.chrome,
-    borderTopWidth: 2,
-    borderTopColor: colors.chromeBorder,
-    shadowColor: colors.chromeBorder,
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: -3 },
-    elevation: 8,
+    ...Platform.select({
+      web: {
+        boxShadow: '0 -3px 12px rgba(168, 85, 247, 0.3)',
+      },
+      default: {
+        shadowColor: colors.chromeBorder,
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: -3 },
+        elevation: 8,
+      },
+    }),
+  },
+  footerRule: {
+    height: 2,
+    width: '100%',
+    backgroundColor: colors.chromeBorder,
   },
   footerInner: {
     width: '100%',

@@ -103,7 +103,15 @@ export const inputStyle: TextStyle = {
 
 export const cardStyle: ViewStyle = {
   backgroundColor: colors.surface,
-  borderWidth: 2,
-  borderColor: colors.chromeBorder,
   borderRadius: radii['2xl'],
+  ...Platform.select({
+    web: {
+      boxShadow: `0 0 0 2px ${colors.chromeBorder}`,
+    },
+    default: {
+      borderWidth: 2,
+      borderStyle: 'solid',
+      borderColor: colors.chromeBorder,
+    },
+  }),
 };
