@@ -39,6 +39,7 @@ function titleCase(value: string): string {
 
 /** Derive a readable school name from an email. Mock-friendly; swap for a registrar list later. */
 export function schoolFromEmail(email: string): string {
+  if (!isSchoolEmail(email)) return 'your school';
   const match = email.trim().toLowerCase().match(/@([^@\s]+)$/);
   if (!match) return 'your school';
   let domain = match[1];

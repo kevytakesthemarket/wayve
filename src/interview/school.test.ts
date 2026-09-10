@@ -13,6 +13,7 @@ describe('schoolFromEmail', () => {
   it('falls back to a title-cased domain slug', () => {
     assert.equal(schoolFromEmail('you@campus.edu'), 'Campus');
     assert.equal(schoolFromEmail('not-an-email'), 'your school');
+    assert.equal(schoolFromEmail('you@gmail.com'), 'your school');
   });
 
   it('validates email shape', () => {
