@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
   },
   pickOn: {
     borderColor: colors.forest,
-    backgroundColor: colors.cream,
+    backgroundColor: colors.paperDeep,
   },
   pickText: {
     fontFamily: fonts.sans,
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
     color: colors.ink,
   },
   pickTextOn: {
-    color: colors.forestDeep,
+    color: colors.ink,
   },
   link: {
     fontFamily: fonts.sans,

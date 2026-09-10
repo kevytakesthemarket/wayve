@@ -9,15 +9,15 @@ import { Screen } from '@/components/Screen';
 import { COPY } from '@/interview/copy';
 import { useInterview } from '@/interview/context';
 import { PLAN_COPY } from '@/plan/copy';
-import { weeklySlate } from '@/plan/slate';
+import { usePlan } from '@/plan/context';
 import { scorer } from '@/scoring';
 import { colors, fonts } from '@/theme/colors';
 
 export default function UnlockScreen() {
   const router = useRouter();
   const { state } = useInterview();
+  const { weekly, peopleOpen } = usePlan();
   const note = scorer.emptyFacetNote(state);
-  const clubs = weeklySlate();
 
   return (
     <Screen
@@ -34,7 +34,7 @@ export default function UnlockScreen() {
       <InterviewChrome step={6} total={6} startedAt={state.startedAt} />
       <FirstPassBadge />
       <Text style={styles.q}>{COPY.unlockLead}</Text>
-      <Text style={styles.people}>{PLAN_COPY.homePeopleClosed}</Text>
+      <Text style={styles.people}>{peopleOpen ? PLAN_COPY.homePeopleOpen : PLAN_COPY.homePeopleClosed}</Text>
 
       {state.publicCard ? (
         <View style={styles.card}>
@@ -44,7 +44,7 @@ export default function UnlockScreen() {
       ) : null}
 
       <Text style={styles.section}>Clubs this week</Text>
-      {clubs.map((club) => (
+      {weekly.map((club) => (
         <View key={club.id} style={styles.club}>
           <Text style={styles.clubName}>{club.name}</Text>
           <Text style={styles.clubNote}>{club.next_meeting}</Text>

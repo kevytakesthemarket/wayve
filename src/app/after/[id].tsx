@@ -9,14 +9,13 @@ import { Screen } from '@/components/Screen';
 import { TextLink } from '@/components/TextLink';
 import { PLAN_COPY } from '@/plan/copy';
 import { usePlan } from '@/plan/context';
-import { clubById } from '@/plan/slate';
 import { colors, fonts } from '@/theme/colors';
 
 export default function AfterVisitScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { recordVisit, visitFor, commitmentFor } = usePlan();
-  const club = id ? clubById(id) : undefined;
+  const { recordVisit, visitFor, commitmentFor, findClub } = usePlan();
+  const club = id ? findClub(id) : undefined;
   const existing = id ? visitFor(id) : undefined;
   const commitment = id ? commitmentFor(id) : undefined;
 

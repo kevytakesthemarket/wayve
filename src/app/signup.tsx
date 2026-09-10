@@ -5,10 +5,11 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { ChoiceChip } from '@/components/ChoiceChip';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
+import { WayveMark } from '@/components/WayveMark';
 import { COPY } from '@/interview/copy';
 import { useInterview } from '@/interview/context';
 import { usePlan } from '@/plan/context';
-import { looksLikeEmail, schoolFromEmail } from '@/interview/school';
+import { isSchoolEmail, looksLikeEmail, schoolFromEmail } from '@/interview/school';
 import { LIVING, YEARS, type Living, type Year } from '@/interview/types';
 import { colors, fonts } from '@/theme/colors';
 
@@ -22,7 +23,8 @@ export default function SignupScreen() {
   const [living, setLiving] = useState<Living | null>(state.signup.living);
 
   const school = useMemo(() => schoolFromEmail(email), [email]);
-  const valid = looksLikeEmail(email) && firstName.trim().length > 0 && year && living;
+  const schoolOk = isSchoolEmail(email);
+  const valid = schoolOk && firstName.trim().length > 0 && year && living;
 
   return (
     <Screen
@@ -31,7 +33,7 @@ export default function SignupScreen() {
           label={COPY.continue}
           disabled={!valid}
           onPress={async () => {
-            if (!year || !living) return;
+            if (!year || !living || !schoolOk) return;
             await resetPlan();
             await completeSignup({ email, firstName, year, living });
             router.push('/interview/taps');
@@ -39,7 +41,7 @@ export default function SignupScreen() {
         />
       }
     >
-      <Text style={styles.mark}>Wayve</Text>
+      <WayveMark size="md" />
       <Text style={styles.question}>School email, first name, year, and whether you live on campus.</Text>
       <Text style={styles.line}>{COPY.friendsNotDating(school)}</Text>
 
@@ -57,6 +59,11 @@ export default function SignupScreen() {
       {!email || looksLikeEmail(email) ? null : (
         <Text style={styles.soft}>That doesn’t look like an email yet.</Text>
       )}
+      {email && looksLikeEmail(email) && !schoolOk ? (
+        <Text style={styles.soft}>
+          Use a school email (.edu). Personal inboxes are not a campus friends-and-clubs network.
+        </Text>
+      ) : null}
 
       <Text style={styles.label}>First name</Text>
       <TextInput
@@ -86,12 +93,6 @@ export default function SignupScreen() {
 }
 
 const styles = StyleSheet.create({
-  mark: {
-    fontFamily: fonts.serif,
-    fontSize: 28,
-    color: colors.ink,
-    marginTop: 8,
-  },
   question: {
     fontFamily: fonts.serif,
     fontSize: 24,

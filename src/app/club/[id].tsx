@@ -9,15 +9,15 @@ import { useInterview } from '@/interview/context';
 import { PLAN_COPY } from '@/plan/copy';
 import { usePlan } from '@/plan/context';
 import { buildNextAction } from '@/plan/nextAction';
-import { clubById } from '@/plan/slate';
+import { personById, type PersonRow } from '@/plan/people';
 import { colors, fonts } from '@/theme/colors';
 
 export default function ClubDetailScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { state } = useInterview();
-  const { commitIllGo, commitmentFor, isBlocked } = usePlan();
-  const club = id ? clubById(id) : undefined;
+  const { commitIllGo, commitmentFor, isBlocked, findClub, peopleOpen, isPersonBlocked } = usePlan();
+  const club = id ? findClub(id) : undefined;
 
   if (!club || isBlocked(club.id)) {
     return (
@@ -30,6 +30,12 @@ export default function ClubDetailScreen() {
 
   const nextAction = buildNextAction(club, state);
   const committed = Boolean(commitmentFor(club.id));
+  const alsoHere = peopleOpen
+    ? (club.also_at_meeting ?? [])
+        .map((personId) => personById(personId))
+        .filter((person): person is PersonRow => Boolean(person))
+        .filter((person) => !isPersonBlocked(person.id))
+    : [];
 
   return (
     <Screen extraBottom={32}>
@@ -39,9 +45,14 @@ export default function ClubDetailScreen() {
         club={club}
         nextAction={nextAction}
         committed={committed}
-        onIllGo={() => commitIllGo(club.id, nextAction)}
+        alsoHere={alsoHere}
+        onIllGo={() => {
+          void commitIllGo(club.id, nextAction);
+        }}
         onReport={() => router.push({ pathname: '/safety/report', params: { clubId: club.id } })}
         onBlock={() => router.push({ pathname: '/safety/block', params: { clubId: club.id } })}
+        onReportPerson={(personId) => router.push({ pathname: '/safety/report', params: { personId } })}
+        onBlockPerson={(personId) => router.push({ pathname: '/safety/block', params: { personId } })}
       />
       {committed ? (
         <View style={styles.links}>

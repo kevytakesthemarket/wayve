@@ -1,20 +1,24 @@
 import { Platform } from 'react-native';
 
-/** Calm campus paper — not a nightclub, not a dating app. */
+/**
+ * Dark campus canvas with Wayve purple accents.
+ * Palette is borrowed from wayve.bio (purple on near-black) but the product
+ * stays friends + clubs — not FreedomFest, not dating chrome.
+ */
 export const colors = {
-  paper: '#F4EFE4',
-  paperDeep: '#E8E0D0',
-  card: '#FFFCF6',
-  ink: '#1C2A22',
-  muted: '#5C6B62',
-  hint: '#7A877E',
-  line: '#D4CBB8',
-  forest: '#2F5D50',
-  forestDeep: '#23463C',
-  cream: '#FBF7EE',
-  warning: '#6B5344',
-  warningWash: '#F3E6D4',
-  firstPass: '#8A5A2B',
+  paper: '#0B0714',
+  paperDeep: '#160C24',
+  card: '#14101C',
+  ink: '#F4EEFF',
+  muted: '#B9ABC8',
+  hint: '#8B7C9E',
+  line: '#4A3470',
+  forest: '#A78BFA',
+  forestDeep: '#6D28D9',
+  cream: '#F8F4FF',
+  warning: '#E7B4A2',
+  warningWash: '#2C1820',
+  firstPass: '#D4BFFF',
 } as const;
 
 export const fonts = Platform.select({

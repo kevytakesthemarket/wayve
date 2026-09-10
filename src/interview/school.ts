@@ -39,6 +39,7 @@ function titleCase(value: string): string {
 
 /** Derive a readable school name from an email. Mock-friendly; swap for a registrar list later. */
 export function schoolFromEmail(email: string): string {
+  if (!isSchoolEmail(email)) return 'your school';
   const match = email.trim().toLowerCase().match(/@([^@\s]+)$/);
   if (!match) return 'your school';
   let domain = match[1];
@@ -54,4 +55,15 @@ export function schoolFromEmail(email: string): string {
 
 export function looksLikeEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+}
+
+/** Campus network gate — personal inboxes are not a school. */
+export function isSchoolEmail(value: string): boolean {
+  if (!looksLikeEmail(value)) return false;
+  const domain = value.trim().toLowerCase().split('@')[1] ?? '';
+  if (domain.endsWith('.edu') || /\.edu\.[a-z]{2,3}$/.test(domain) || domain.endsWith('.ac.uk')) {
+    return true;
+  }
+  const stripped = domain.replace(/^(mail|students|student|email|u|alumni)\./, '');
+  return Boolean(KNOWN[domain] || KNOWN[stripped]);
 }
