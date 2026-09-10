@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
 
-import { colors, fonts } from '@/theme/colors';
+import { colors, fonts, radii } from '@/theme/colors';
 
 export function ChoiceChip({
   label,
@@ -26,9 +26,9 @@ export function ChoiceChip({
 const styles = StyleSheet.create({
   chip: {
     borderWidth: 1,
-    borderColor: colors.line,
-    backgroundColor: colors.card,
-    borderRadius: 12,
+    borderColor: colors.inputBorder,
+    backgroundColor: colors.surfaceMuted,
+    borderRadius: radii.xl,
     paddingVertical: 12,
     paddingHorizontal: 14,
     marginRight: 8,
@@ -36,16 +36,17 @@ const styles = StyleSheet.create({
     cursor: 'pointer',
   },
   selected: {
-    backgroundColor: colors.forestDeep,
-    borderColor: colors.forest,
+    backgroundColor: colors.primaryFrom,
+    borderColor: colors.accentStrong,
   },
   label: {
-    color: colors.ink,
+    color: colors.body,
     fontFamily: fonts.sans,
     fontSize: 15,
     lineHeight: 20,
   },
   selectedLabel: {
-    color: colors.cream,
+    color: colors.body,
+    fontWeight: '600',
   },
 });

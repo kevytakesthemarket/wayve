@@ -1,7 +1,9 @@
 import { useRouter } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 
+import { Card } from '@/components/Card';
 import { FirstPassBadge } from '@/components/FirstPassBadge';
+import { Heading } from '@/components/Heading';
 import { InterviewChrome } from '@/components/InterviewChrome';
 import { Notice } from '@/components/Notice';
 import { PrimaryButton } from '@/components/PrimaryButton';
@@ -33,22 +35,22 @@ export default function UnlockScreen() {
     >
       <InterviewChrome step={6} total={6} startedAt={state.startedAt} />
       <FirstPassBadge />
-      <Text style={styles.q}>{COPY.unlockLead}</Text>
+      <Heading size="md">{COPY.unlockLead}</Heading>
       <Text style={styles.people}>{peopleOpen ? PLAN_COPY.homePeopleOpen : PLAN_COPY.homePeopleClosed}</Text>
 
       {state.publicCard ? (
-        <View style={styles.card}>
+        <Card>
           <Text style={styles.cardLabel}>Your card</Text>
           <Text style={styles.cardBody}>{state.publicCard}</Text>
-        </View>
+        </Card>
       ) : null}
 
       <Text style={styles.section}>Clubs this week</Text>
       {weekly.map((club) => (
-        <View key={club.id} style={styles.club}>
+        <Card key={club.id}>
           <Text style={styles.clubName}>{club.name}</Text>
           <Text style={styles.clubNote}>{club.next_meeting}</Text>
-        </View>
+        </Card>
       ))}
 
       {note ? <Notice text={note} /> : null}
@@ -57,25 +59,11 @@ export default function UnlockScreen() {
 }
 
 const styles = StyleSheet.create({
-  q: {
-    fontFamily: fonts.serif,
-    fontSize: 24,
-    lineHeight: 32,
-    color: colors.ink,
-  },
   people: {
     fontFamily: fonts.sans,
     fontSize: 15,
     lineHeight: 22,
-    color: colors.forest,
-  },
-  card: {
-    backgroundColor: colors.card,
-    borderRadius: 14,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: colors.line,
-    gap: 6,
+    color: colors.accent,
   },
   cardLabel: {
     fontFamily: fonts.sans,
@@ -87,9 +75,10 @@ const styles = StyleSheet.create({
   },
   cardBody: {
     fontFamily: fonts.serif,
+    fontStyle: 'italic',
     fontSize: 16,
     lineHeight: 24,
-    color: colors.ink,
+    color: colors.body,
   },
   section: {
     fontFamily: fonts.sans,
@@ -100,19 +89,12 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 0.6,
   },
-  club: {
-    backgroundColor: colors.card,
-    borderRadius: 14,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: colors.line,
-    gap: 4,
-  },
   clubName: {
-    fontFamily: fonts.sans,
-    fontSize: 16,
+    fontFamily: fonts.serif,
+    fontStyle: 'italic',
     fontWeight: '700',
-    color: colors.ink,
+    fontSize: 18,
+    color: colors.title,
   },
   clubNote: {
     fontFamily: fonts.sans,

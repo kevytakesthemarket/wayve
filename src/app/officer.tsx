@@ -1,9 +1,11 @@
 import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
+import { Card } from '@/components/Card';
 import { ChoiceChip } from '@/components/ChoiceChip';
 import { ExpandingText } from '@/components/ExpandingText';
+import { Field } from '@/components/Field';
 import { Notice } from '@/components/Notice';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
@@ -63,85 +65,78 @@ export default function OfficerIntakeScreen() {
       }
     >
       <TextLink label="Back" onPress={() => router.back()} />
-      <Text style={styles.title}>{PLAN_COPY.officerTitle}</Text>
       <Text style={styles.lead}>{PLAN_COPY.officerLead}</Text>
 
       {listed ? <Notice text={PLAN_COPY.officerListed} /> : null}
 
-      <Text style={styles.label}>{PLAN_COPY.officerName}</Text>
-      <TextInput
-        value={draft.name}
-        onChangeText={(name) => setDraft((prev) => ({ ...prev, name }))}
-        placeholder="South-wing Sculpture Studio"
-        placeholderTextColor={colors.hint}
-        style={styles.field}
-      />
+      <Card variant="form" title="List a room">
+        <Field
+          label={PLAN_COPY.officerName}
+          value={draft.name}
+          onChangeText={(name) => setDraft((prev) => ({ ...prev, name }))}
+          placeholder="South-wing Sculpture Studio"
+        />
 
-      <Text style={styles.label}>{PLAN_COPY.officerFirst15}</Text>
-      <ExpandingText
-        value={draft.first_15_script}
-        onChangeText={(first_15_script) => setDraft((prev) => ({ ...prev, first_15_script }))}
-        placeholder="Walk in. Put your bag down. Start the thing. The first 15 minutes is…"
-      />
+        <Text style={styles.label}>{PLAN_COPY.officerFirst15}</Text>
+        <ExpandingText
+          value={draft.first_15_script}
+          onChangeText={(first_15_script) => setDraft((prev) => ({ ...prev, first_15_script }))}
+          placeholder="Walk in. Put your bag down. Start the thing. The first 15 minutes is…"
+        />
 
-      <Text style={styles.label}>{PLAN_COPY.officerStay}</Text>
-      <ExpandingText
-        value={draft.stay_leave}
-        onChangeText={(stay_leave) => setDraft((prev) => ({ ...prev, stay_leave }))}
-        placeholder="Stay if… Leave if…"
-      />
+        <Text style={styles.label}>{PLAN_COPY.officerStay}</Text>
+        <ExpandingText
+          value={draft.stay_leave}
+          onChangeText={(stay_leave) => setDraft((prev) => ({ ...prev, stay_leave }))}
+          placeholder="Stay if… Leave if…"
+        />
 
-      <Text style={styles.label}>{PLAN_COPY.officerHours}</Text>
-      <TextInput
-        value={draft.weekly_hours}
-        onChangeText={(weekly_hours) => setDraft((prev) => ({ ...prev, weekly_hours }))}
-        placeholder="Thursdays 7–10pm, south-wing studio"
-        placeholderTextColor={colors.hint}
-        style={styles.field}
-      />
+        <Field
+          label={PLAN_COPY.officerHours}
+          value={draft.weekly_hours}
+          onChangeText={(weekly_hours) => setDraft((prev) => ({ ...prev, weekly_hours }))}
+          placeholder="Thursdays 7–10pm, south-wing studio"
+        />
 
-      <Text style={styles.label}>{PLAN_COPY.officerNext}</Text>
-      <TextInput
-        value={draft.next_meeting}
-        onChangeText={(next_meeting) => setDraft((prev) => ({ ...prev, next_meeting }))}
-        placeholder="Thursday 7pm, south-wing studio"
-        placeholderTextColor={colors.hint}
-        style={styles.field}
-      />
+        <Field
+          label={PLAN_COPY.officerNext}
+          value={draft.next_meeting}
+          onChangeText={(next_meeting) => setDraft((prev) => ({ ...prev, next_meeting }))}
+          placeholder="Thursday 7pm, south-wing studio"
+        />
 
-      <Text style={styles.label}>{PLAN_COPY.officerNotFit}</Text>
-      <ExpandingText
-        value={draft.not_fit_if}
-        onChangeText={(not_fit_if) => setDraft((prev) => ({ ...prev, not_fit_if }))}
-        placeholder="You need a mixer, a roster, or a pledge process."
-      />
+        <Text style={styles.label}>{PLAN_COPY.officerNotFit}</Text>
+        <ExpandingText
+          value={draft.not_fit_if}
+          onChangeText={(not_fit_if) => setDraft((prev) => ({ ...prev, not_fit_if }))}
+          placeholder="You need a mixer, a roster, or a pledge process."
+        />
 
-      <Text style={styles.label}>{PLAN_COPY.officerWalk}</Text>
-      <TextInput
-        value={draft.walk_instruction}
-        onChangeText={(walk_instruction) => setDraft((prev) => ({ ...prev, walk_instruction }))}
-        placeholder="walk to the south-wing studio at 7"
-        placeholderTextColor={colors.hint}
-        style={styles.field}
-      />
+        <Field
+          label={PLAN_COPY.officerWalk}
+          value={draft.walk_instruction}
+          onChangeText={(walk_instruction) => setDraft((prev) => ({ ...prev, walk_instruction }))}
+          placeholder="walk to the south-wing studio at 7"
+        />
 
-      <Text style={styles.label}>{PLAN_COPY.officerNights}</Text>
-      <View style={styles.wrap}>
-        {INTAKE_NIGHTS.map((night) => (
-          <ChoiceChip
-            key={night}
-            label={night}
-            selected={draft.slack_nights.includes(night)}
-            onPress={() => toggleNight(night)}
-          />
-        ))}
-      </View>
+        <Text style={styles.label}>{PLAN_COPY.officerNights}</Text>
+        <View style={styles.wrap}>
+          {INTAKE_NIGHTS.map((night) => (
+            <ChoiceChip
+              key={night}
+              label={night}
+              selected={draft.slack_nights.includes(night)}
+              onPress={() => toggleNight(night)}
+            />
+          ))}
+        </View>
 
-      <ChoiceChip
-        label={PLAN_COPY.officerDropIn}
-        selected={draft.drop_in_ok}
-        onPress={() => setDraft((prev) => ({ ...prev, drop_in_ok: !prev.drop_in_ok }))}
-      />
+        <ChoiceChip
+          label={PLAN_COPY.officerDropIn}
+          selected={draft.drop_in_ok}
+          onPress={() => setDraft((prev) => ({ ...prev, drop_in_ok: !prev.drop_in_ok }))}
+        />
+      </Card>
 
       {!listed && draft.first_15_script.trim() === '' && draft.name.trim() ? (
         <Notice text="This club will not appear on anyone's weekly plan until the first 15 minutes is written." />
@@ -151,12 +146,6 @@ export default function OfficerIntakeScreen() {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontFamily: fonts.serif,
-    fontSize: 32,
-    lineHeight: 38,
-    color: colors.ink,
-  },
   lead: {
     fontFamily: fonts.sans,
     fontSize: 16,
@@ -169,17 +158,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.muted,
     marginTop: 8,
-  },
-  field: {
-    backgroundColor: colors.card,
-    borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 14,
-    fontFamily: fonts.sans,
-    fontSize: 17,
-    color: colors.ink,
   },
   wrap: {
     flexDirection: 'row',

@@ -1,9 +1,9 @@
 import { useRouter } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { Card } from '@/components/Card';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
-import { WayveMark } from '@/components/WayveMark';
 import { COPY } from '@/interview/copy';
 import { useInterview } from '@/interview/context';
 import { usePlan } from '@/plan/context';
@@ -19,9 +19,12 @@ export default function WelcomeScreen() {
   const hasProgress = state.step !== 'welcome' && (state.signup.firstName || state.startedAt);
 
   return (
-    <Screen
-      footer={
-        <View style={styles.footerCol}>
+    <Screen centered>
+      <Card title="Welcome To Wayve">
+        <Text style={styles.kicker}>{COPY.welcomeKicker}</Text>
+        <Text style={styles.line}>{COPY.friendsNotDating(school)}</Text>
+        <Text style={styles.body}>{COPY.welcomeBody}</Text>
+        <View style={styles.cta}>
           {hasProgress ? (
             <PrimaryButton
               label="Continue where you left off"
@@ -40,12 +43,7 @@ export default function WelcomeScreen() {
             muted={!!hasProgress}
           />
         </View>
-      }
-    >
-      <WayveMark />
-      <Text style={styles.kicker}>{COPY.welcomeKicker}</Text>
-      <Text style={styles.line}>{COPY.friendsNotDating(school)}</Text>
-      <Text style={styles.body}>{COPY.welcomeBody}</Text>
+      </Card>
     </Screen>
   );
 }
@@ -87,25 +85,27 @@ function routeForStep(
 const styles = StyleSheet.create({
   kicker: {
     fontFamily: fonts.sans,
-    fontSize: 20,
-    lineHeight: 28,
-    color: colors.ink,
-    fontWeight: '600',
+    fontSize: 14,
+    lineHeight: 22,
+    color: colors.body,
+    textAlign: 'center',
   },
   line: {
     fontFamily: fonts.sans,
-    fontSize: 17,
-    lineHeight: 24,
-    color: colors.forest,
+    fontSize: 14,
+    lineHeight: 22,
+    color: colors.body,
+    textAlign: 'center',
   },
   body: {
     fontFamily: fonts.sans,
-    fontSize: 17,
-    lineHeight: 26,
-    color: colors.muted,
-    marginTop: 8,
+    fontSize: 14,
+    lineHeight: 22,
+    color: colors.body,
+    textAlign: 'center',
   },
-  footerCol: {
-    gap: 10,
+  cta: {
+    gap: 12,
+    marginTop: 8,
   },
 });

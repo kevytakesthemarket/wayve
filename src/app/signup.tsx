@@ -1,11 +1,12 @@
 import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
+import { Card } from '@/components/Card';
 import { ChoiceChip } from '@/components/ChoiceChip';
+import { Field } from '@/components/Field';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
-import { WayveMark } from '@/components/WayveMark';
 import { COPY } from '@/interview/copy';
 import { useInterview } from '@/interview/context';
 import { usePlan } from '@/plan/context';
@@ -28,6 +29,8 @@ export default function SignupScreen() {
 
   return (
     <Screen
+      centered
+      extraBottom={32}
       footer={
         <PrimaryButton
           label={COPY.continue}
@@ -41,87 +44,75 @@ export default function SignupScreen() {
         />
       }
     >
-      <WayveMark size="md" />
-      <Text style={styles.question}>School email, first name, year, and whether you live on campus.</Text>
-      <Text style={styles.line}>{COPY.friendsNotDating(school)}</Text>
+      <Card variant="form" title="Your campus">
+        <Text style={styles.line}>{COPY.friendsNotDating(school)}</Text>
+        <Text style={styles.helper}>School email, first name, year, and whether you live on campus.</Text>
 
-      <Text style={styles.label}>School email</Text>
-      <TextInput
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        autoCorrect={false}
-        keyboardType="email-address"
-        placeholder="you@school.edu"
-        placeholderTextColor={colors.hint}
-        style={styles.field}
-      />
-      {!email || looksLikeEmail(email) ? null : (
-        <Text style={styles.soft}>That doesn’t look like an email yet.</Text>
-      )}
-      {email && looksLikeEmail(email) && !schoolOk ? (
-        <Text style={styles.soft}>
-          Use a school email (.edu). Personal inboxes are not a campus friends-and-clubs network.
-        </Text>
-      ) : null}
+        <Field
+          label="School email"
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType="email-address"
+          placeholder="you@school.edu"
+        />
+        {!email || looksLikeEmail(email) ? null : (
+          <Text style={styles.soft}>That doesn’t look like an email yet.</Text>
+        )}
+        {email && looksLikeEmail(email) && !schoolOk ? (
+          <Text style={styles.soft}>
+            Use a school email (.edu). Personal inboxes are not a campus friends-and-clubs network.
+          </Text>
+        ) : null}
 
-      <Text style={styles.label}>First name</Text>
-      <TextInput
-        value={firstName}
-        onChangeText={setFirstName}
-        autoCapitalize="words"
-        placeholder="What people actually call you"
-        placeholderTextColor={colors.hint}
-        style={styles.field}
-      />
+        <Field
+          label="First name"
+          value={firstName}
+          onChangeText={setFirstName}
+          autoCapitalize="words"
+          placeholder="What people actually call you"
+        />
 
-      <Text style={styles.label}>Year</Text>
-      <View style={styles.wrap}>
-        {YEARS.map((item) => (
-          <ChoiceChip key={item} label={item} selected={year === item} onPress={() => setYear(item)} />
-        ))}
-      </View>
+        <Text style={styles.label}>Year</Text>
+        <View style={styles.wrap}>
+          {YEARS.map((item) => (
+            <ChoiceChip key={item} label={item} selected={year === item} onPress={() => setYear(item)} />
+          ))}
+        </View>
 
-      <Text style={styles.label}>Residential or commuter</Text>
-      <View style={styles.wrap}>
-        {LIVING.map((item) => (
-          <ChoiceChip key={item} label={item} selected={living === item} onPress={() => setLiving(item)} />
-        ))}
-      </View>
+        <Text style={styles.label}>Residential or commuter</Text>
+        <View style={styles.wrap}>
+          {LIVING.map((item) => (
+            <ChoiceChip key={item} label={item} selected={living === item} onPress={() => setLiving(item)} />
+          ))}
+        </View>
+      </Card>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  question: {
-    fontFamily: fonts.serif,
-    fontSize: 24,
-    lineHeight: 32,
-    color: colors.ink,
-  },
   line: {
     fontFamily: fonts.sans,
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: 22,
-    color: colors.forest,
+    color: colors.body,
+    textAlign: 'center',
+  },
+  helper: {
+    fontFamily: fonts.sans,
+    fontSize: 14,
+    lineHeight: 20,
+    color: colors.muted,
+    textAlign: 'center',
   },
   label: {
     fontFamily: fonts.sans,
     fontSize: 13,
     fontWeight: '600',
     color: colors.muted,
-    marginTop: 8,
-  },
-  field: {
-    backgroundColor: colors.card,
-    borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 14,
-    fontFamily: fonts.sans,
-    fontSize: 17,
-    color: colors.ink,
+    marginTop: 4,
   },
   wrap: {
     flexDirection: 'row',

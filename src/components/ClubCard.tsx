@@ -1,11 +1,12 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { Card } from '@/components/Card';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { TextLink } from '@/components/TextLink';
 import { PLAN_COPY } from '@/plan/copy';
 import type { PersonRow } from '@/plan/people';
 import type { Club } from '@/plan/types';
-import { colors, fonts } from '@/theme/colors';
+import { colors, fonts, titleStyle } from '@/theme/colors';
 
 export function ClubCard({
   club,
@@ -31,7 +32,7 @@ export function ClubCard({
   onBlockPerson?: (personId: string) => void;
 }) {
   return (
-    <View style={styles.card}>
+    <Card>
       {onOpen ? (
         <Pressable onPress={onOpen} accessibilityRole="button">
           <Text style={styles.name}>{club.name}</Text>
@@ -92,7 +93,7 @@ export function ClubCard({
           {onBlock ? <TextLink label={PLAN_COPY.blockLink} onPress={onBlock} muted /> : null}
         </View>
       ) : null}
-    </View>
+    </Card>
   );
 }
 
@@ -106,19 +107,10 @@ function Field({ label, body }: { label: string; body: string }) {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: colors.card,
-    borderRadius: 16,
-    padding: 18,
-    borderWidth: 1,
-    borderColor: colors.forest,
-    gap: 16,
-  },
   name: {
-    fontFamily: fonts.serif,
+    ...titleStyle,
     fontSize: 24,
     lineHeight: 30,
-    color: colors.ink,
   },
   field: {
     gap: 6,
@@ -135,19 +127,19 @@ const styles = StyleSheet.create({
     fontFamily: fonts.sans,
     fontSize: 16,
     lineHeight: 24,
-    color: colors.ink,
+    color: colors.body,
   },
   drop: {
     fontFamily: fonts.sans,
     fontSize: 14,
     lineHeight: 20,
-    color: colors.forest,
+    color: colors.accent,
     fontWeight: '600',
   },
   alsoWrap: {
     gap: 10,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.line,
+    borderTopWidth: 1,
+    borderTopColor: colors.inputBorder,
     paddingTop: 12,
   },
   alsoNote: {
@@ -163,7 +155,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.sans,
     fontSize: 16,
     fontWeight: '700',
-    color: colors.ink,
+    color: colors.body,
   },
   personNote: {
     fontFamily: fonts.sans,
@@ -175,7 +167,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.sans,
     fontSize: 15,
     lineHeight: 22,
-    color: colors.forest,
+    color: colors.accent,
   },
   row: {
     flexDirection: 'row',

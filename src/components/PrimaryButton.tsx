@@ -1,6 +1,7 @@
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, fonts } from '@/theme/colors';
+import { colors, fonts, radii } from '@/theme/colors';
 
 export function PrimaryButton({
   label,
@@ -19,48 +20,72 @@ export function PrimaryButton({
       onPress={onPress}
       disabled={disabled}
       style={({ pressed }) => [
-        styles.btn,
-        muted && styles.muted,
+        styles.wrap,
         disabled && styles.disabled,
-        pressed && !disabled && !muted && styles.pressed,
-        pressed && !disabled && muted && styles.mutedPressed,
+        pressed && !disabled && styles.pressedScale,
       ]}
     >
-      <Text style={[styles.label, muted && styles.mutedLabel]}>{label}</Text>
+      {({ pressed }) =>
+        muted ? (
+          <View style={[styles.btn, styles.mutedBtn, pressed && styles.mutedPressed]}>
+            <Text style={styles.mutedLabel}>{label}</Text>
+          </View>
+        ) : (
+          <LinearGradient
+            colors={
+              pressed && !disabled
+                ? [colors.primaryFromPressed, colors.primaryToPressed]
+                : [colors.primaryFrom, colors.primaryTo]
+            }
+            start={{ x: 0, y: 0.5 }}
+            end={{ x: 1, y: 0.5 }}
+            style={styles.btn}
+          >
+            <Text style={styles.label}>{label}</Text>
+          </LinearGradient>
+        )
+      }
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  btn: {
-    backgroundColor: colors.forestDeep,
-    borderRadius: 14,
-    paddingVertical: 16,
-    paddingHorizontal: 18,
-    alignItems: 'center',
+  wrap: {
+    width: '100%',
     cursor: 'pointer',
   },
-  muted: {
-    backgroundColor: colors.card,
+  btn: {
+    borderRadius: radii.xl,
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  mutedBtn: {
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: colors.secondaryBorder,
+    backgroundColor: 'transparent',
   },
   mutedPressed: {
-    backgroundColor: colors.paperDeep,
+    borderColor: 'rgba(192, 132, 252, 0.5)',
   },
   disabled: {
     opacity: 0.4,
   },
-  pressed: {
-    backgroundColor: '#5B21B6',
+  pressedScale: {
+    transform: [{ scale: 0.99 }],
   },
   label: {
-    color: colors.cream,
+    color: colors.body,
     fontFamily: fonts.sans,
     fontSize: 16,
     fontWeight: '600',
   },
   mutedLabel: {
-    color: colors.ink,
+    color: colors.secondaryText,
+    fontFamily: fonts.sans,
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
   },
 });

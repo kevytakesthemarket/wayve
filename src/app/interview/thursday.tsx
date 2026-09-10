@@ -2,7 +2,9 @@ import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
+import { Card } from '@/components/Card';
 import { ExpandingText } from '@/components/ExpandingText';
+import { Heading } from '@/components/Heading';
 import { InterviewChrome } from '@/components/InterviewChrome';
 import { Notice } from '@/components/Notice';
 import { PrimaryButton } from '@/components/PrimaryButton';
@@ -35,25 +37,21 @@ export default function ThursdayScreen() {
       }
     >
       <InterviewChrome step={4} total={6} startedAt={state.startedAt} onBack={() => router.back()} />
-      <Text style={styles.q}>{COPY.thursdayQ}</Text>
-      <Text style={styles.helper}>{COPY.thursdayHelper}</Text>
-      <ExpandingText
-        value={text}
-        onChangeText={setText}
-        placeholder="Last class, then what. Who was around. When you wanted out."
-      />
-      {notice ? <Notice text={notice} /> : null}
+      <Card variant="form">
+        <Heading size="md">{COPY.thursdayQ}</Heading>
+        <Text style={styles.helper}>{COPY.thursdayHelper}</Text>
+        <ExpandingText
+          value={text}
+          onChangeText={setText}
+          placeholder="Last class, then what. Who was around. When you wanted out."
+        />
+        {notice ? <Notice text={notice} /> : null}
+      </Card>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  q: {
-    fontFamily: fonts.serif,
-    fontSize: 24,
-    lineHeight: 32,
-    color: colors.ink,
-  },
   helper: {
     fontFamily: fonts.sans,
     fontSize: 15,

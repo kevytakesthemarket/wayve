@@ -2,7 +2,9 @@ import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 
+import { Card } from '@/components/Card';
 import { FirstPassBadge } from '@/components/FirstPassBadge';
+import { Heading } from '@/components/Heading';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { TextLink } from '@/components/TextLink';
@@ -43,11 +45,11 @@ export default function ReminderScreen() {
     >
       <TextLink label="Back" onPress={() => router.back()} />
       <FirstPassBadge />
-      <Text style={styles.title}>{PLAN_COPY.reminderTitle}</Text>
+      <Heading>{PLAN_COPY.reminderTitle}</Heading>
       {club ? <Text style={styles.club}>{club.name}</Text> : null}
 
       {body ? (
-        <>
+        <Card>
           <Text style={styles.body}>{body}</Text>
           <Text style={styles.note}>{PLAN_COPY.reminderNote}</Text>
           <Text style={styles.note}>{notifyLine}</Text>
@@ -65,7 +67,7 @@ export default function ReminderScreen() {
             />
           ) : null}
           {previewNote ? <Text style={styles.note}>{previewNote}</Text> : null}
-        </>
+        </Card>
       ) : (
         <Text style={styles.note}>{PLAN_COPY.reminderEmpty}</Text>
       )}
@@ -80,24 +82,19 @@ function notifyCopy(reason: 'web' | 'denied' | 'unavailable' | undefined, armed:
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontFamily: fonts.serif,
-    fontSize: 32,
-    lineHeight: 38,
-    color: colors.ink,
-  },
   club: {
     fontFamily: fonts.sans,
     fontSize: 16,
     fontWeight: '600',
-    color: colors.forest,
+    color: colors.accent,
   },
   body: {
     fontFamily: fonts.serif,
+    fontStyle: 'italic',
+    fontWeight: '700',
     fontSize: 24,
     lineHeight: 34,
-    color: colors.ink,
-    marginTop: 8,
+    color: colors.title,
   },
   note: {
     fontFamily: fonts.sans,

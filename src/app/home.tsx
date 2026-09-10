@@ -2,8 +2,10 @@ import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { Card } from '@/components/Card';
 import { ClubCard } from '@/components/ClubCard';
 import { FirstPassBadge } from '@/components/FirstPassBadge';
+import { Heading } from '@/components/Heading';
 import { Notice } from '@/components/Notice';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
@@ -58,16 +60,16 @@ export default function HomeScreen() {
       }
     >
       <FirstPassBadge />
-      <Text style={styles.kicker}>{PLAN_COPY.homeKicker}</Text>
+      <Heading>{PLAN_COPY.homeKicker}</Heading>
       <Text style={styles.lead}>{PLAN_COPY.homeLead}</Text>
       <Text style={styles.people}>{peopleOpen ? PLAN_COPY.homePeopleOpen : PLAN_COPY.homePeopleClosed}</Text>
 
       {state.publicCard ? (
-        <View style={styles.card}>
+        <Card>
           <Text style={styles.cardLabel}>Your card</Text>
           <Text style={styles.cardBody}>{state.publicCard}</Text>
           <TextLink label={PLAN_COPY.editCard} onPress={() => router.push('/card')} />
-        </View>
+        </Card>
       ) : (
         <TextLink label={PLAN_COPY.editCard} onPress={() => router.push('/card')} />
       )}
@@ -128,12 +130,6 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  kicker: {
-    fontFamily: fonts.serif,
-    fontSize: 32,
-    lineHeight: 38,
-    color: colors.ink,
-  },
   lead: {
     fontFamily: fonts.sans,
     fontSize: 17,
@@ -144,15 +140,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.sans,
     fontSize: 15,
     lineHeight: 22,
-    color: colors.forest,
-  },
-  card: {
-    backgroundColor: colors.card,
-    borderRadius: 14,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: colors.line,
-    gap: 8,
+    color: colors.accent,
   },
   cardLabel: {
     fontFamily: fonts.sans,
@@ -164,9 +152,10 @@ const styles = StyleSheet.create({
   },
   cardBody: {
     fontFamily: fonts.serif,
+    fontStyle: 'italic',
     fontSize: 16,
     lineHeight: 24,
-    color: colors.ink,
+    color: colors.body,
   },
   links: {
     marginTop: 4,

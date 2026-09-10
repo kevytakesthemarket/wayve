@@ -2,7 +2,9 @@ import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
+import { Card } from '@/components/Card';
 import { ExpandingText } from '@/components/ExpandingText';
+import { Heading } from '@/components/Heading';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { TextLink } from '@/components/TextLink';
@@ -30,30 +32,26 @@ export default function PublicCardScreen() {
       }
     >
       <TextLink label="Back" onPress={() => router.back()} />
-      <Text style={styles.title}>{PLAN_COPY.cardTitle}</Text>
-      <Text style={styles.privacy}>{PLAN_COPY.cardPrivacy}</Text>
-      <Text style={styles.hint}>{PLAN_COPY.cardHint}</Text>
-      <ExpandingText
-        value={card}
-        onChangeText={setCard}
-        placeholder="Your words. We will not rewrite them."
-      />
+      <Card variant="form">
+        <Heading size="md">{PLAN_COPY.cardTitle}</Heading>
+        <Text style={styles.privacy}>{PLAN_COPY.cardPrivacy}</Text>
+        <Text style={styles.hint}>{PLAN_COPY.cardHint}</Text>
+        <ExpandingText
+          value={card}
+          onChangeText={setCard}
+          placeholder="Your words. We will not rewrite them."
+        />
+      </Card>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontFamily: fonts.serif,
-    fontSize: 28,
-    lineHeight: 34,
-    color: colors.ink,
-  },
   privacy: {
     fontFamily: fonts.sans,
     fontSize: 16,
     lineHeight: 24,
-    color: colors.forest,
+    color: colors.accent,
   },
   hint: {
     fontFamily: fonts.sans,

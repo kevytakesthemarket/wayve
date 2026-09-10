@@ -2,8 +2,10 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { Card } from '@/components/Card';
 import { ChoiceChip } from '@/components/ChoiceChip';
 import { ExpandingText } from '@/components/ExpandingText';
+import { Heading } from '@/components/Heading';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { TextLink } from '@/components/TextLink';
@@ -27,7 +29,7 @@ export default function AfterVisitScreen() {
     return (
       <Screen>
         <TextLink label="Back" onPress={() => router.back()} />
-        <Text style={styles.title}>That visit is not on your plan.</Text>
+        <Heading size="md">That visit is not on your plan.</Heading>
       </Screen>
     );
   }
@@ -55,43 +57,39 @@ export default function AfterVisitScreen() {
       }
     >
       <TextLink label="Back" onPress={() => router.back()} />
-      <Text style={styles.title}>{club.name}</Text>
+      <Heading size="md">{club.name}</Heading>
       <Text style={styles.lead}>{PLAN_COPY.afterLead}</Text>
 
       {commitment ? <Text style={styles.committed}>{commitment.nextAction}</Text> : null}
 
-      <Text style={styles.q}>{PLAN_COPY.stayQ}</Text>
-      <Text style={styles.tag}>stay_past_15</Text>
-      <View style={styles.wrap}>
-        <ChoiceChip label={PLAN_COPY.yes} selected={stay === true} onPress={() => setStay(true)} />
-        <ChoiceChip label={PLAN_COPY.no} selected={stay === false} onPress={() => setStay(false)} />
-      </View>
+      <Card variant="form">
+        <Text style={styles.q}>{PLAN_COPY.stayQ}</Text>
+        <Text style={styles.tag}>stay_past_15</Text>
+        <View style={styles.wrap}>
+          <ChoiceChip label={PLAN_COPY.yes} selected={stay === true} onPress={() => setStay(true)} />
+          <ChoiceChip label={PLAN_COPY.no} selected={stay === false} onPress={() => setStay(false)} />
+        </View>
 
-      <Text style={styles.q}>{PLAN_COPY.returnQ}</Text>
-      <Text style={styles.tag}>return_14d</Text>
-      <View style={styles.wrap}>
-        <ChoiceChip label={PLAN_COPY.yes} selected={ret === true} onPress={() => setRet(true)} />
-        <ChoiceChip label={PLAN_COPY.no} selected={ret === false} onPress={() => setRet(false)} />
-      </View>
+        <Text style={styles.q}>{PLAN_COPY.returnQ}</Text>
+        <Text style={styles.tag}>return_14d</Text>
+        <View style={styles.wrap}>
+          <ChoiceChip label={PLAN_COPY.yes} selected={ret === true} onPress={() => setRet(true)} />
+          <ChoiceChip label={PLAN_COPY.no} selected={ret === false} onPress={() => setRet(false)} />
+        </View>
 
-      <Text style={styles.q}>{PLAN_COPY.sceneQ}</Text>
-      <Text style={styles.helper}>{PLAN_COPY.sceneHelper}</Text>
-      <ExpandingText
-        value={scene}
-        onChangeText={setScene}
-        placeholder="What was actually happening."
-      />
+        <Text style={styles.q}>{PLAN_COPY.sceneQ}</Text>
+        <Text style={styles.helper}>{PLAN_COPY.sceneHelper}</Text>
+        <ExpandingText
+          value={scene}
+          onChangeText={setScene}
+          placeholder="What was actually happening."
+        />
+      </Card>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontFamily: fonts.serif,
-    fontSize: 28,
-    lineHeight: 34,
-    color: colors.ink,
-  },
   lead: {
     fontFamily: fonts.sans,
     fontSize: 16,
@@ -100,15 +98,18 @@ const styles = StyleSheet.create({
   },
   committed: {
     fontFamily: fonts.serif,
+    fontStyle: 'italic',
     fontSize: 18,
     lineHeight: 26,
-    color: colors.ink,
+    color: colors.title,
   },
   q: {
     fontFamily: fonts.serif,
+    fontStyle: 'italic',
+    fontWeight: '700',
     fontSize: 22,
     lineHeight: 30,
-    color: colors.ink,
+    color: colors.title,
     marginTop: 8,
   },
   tag: {

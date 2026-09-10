@@ -2,7 +2,9 @@ import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { Card } from '@/components/Card';
 import { ChoiceChip } from '@/components/ChoiceChip';
+import { Heading } from '@/components/Heading';
 import { InterviewChrome } from '@/components/InterviewChrome';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
@@ -52,38 +54,34 @@ export default function TapsScreen() {
           router.back();
         }}
       />
-      <Text style={styles.q}>{COPY.tapsLead}</Text>
-      <Text style={styles.helper}>{COPY.tapsHelper}</Text>
+      <Card variant="form">
+        <Heading size="md">{COPY.tapsLead}</Heading>
+        <Text style={styles.helper}>{COPY.tapsHelper}</Text>
 
-      <Text style={styles.label}>{COPY.slackLabel}</Text>
-      <View style={styles.wrap}>
-        {SLACK_NIGHTS.map((night) => (
-          <ChoiceChip
-            key={night}
-            label={night}
-            selected={nights.includes(night)}
-            onPress={() => toggleNight(night)}
-          />
-        ))}
-      </View>
+        <Text style={styles.label}>{COPY.slackLabel}</Text>
+        <View style={styles.wrap}>
+          {SLACK_NIGHTS.map((night) => (
+            <ChoiceChip
+              key={night}
+              label={night}
+              selected={nights.includes(night)}
+              onPress={() => toggleNight(night)}
+            />
+          ))}
+        </View>
 
-      <Text style={styles.label}>{COPY.energyLabel}</Text>
-      <View style={styles.wrap}>
-        {ENERGIES.map((item) => (
-          <ChoiceChip key={item} label={item} selected={energy === item} onPress={() => setEnergy(item)} />
-        ))}
-      </View>
+        <Text style={styles.label}>{COPY.energyLabel}</Text>
+        <View style={styles.wrap}>
+          {ENERGIES.map((item) => (
+            <ChoiceChip key={item} label={item} selected={energy === item} onPress={() => setEnergy(item)} />
+          ))}
+        </View>
+      </Card>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  q: {
-    fontFamily: fonts.serif,
-    fontSize: 24,
-    lineHeight: 32,
-    color: colors.ink,
-  },
   helper: {
     fontFamily: fonts.sans,
     fontSize: 15,

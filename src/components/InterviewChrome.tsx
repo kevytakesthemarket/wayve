@@ -45,11 +45,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   back: {
-    color: colors.forest,
+    color: colors.link,
     fontFamily: fonts.sans,
     fontSize: 15,
     fontWeight: '600',
     width: 52,
+    textDecorationLine: 'underline',
   },
   dots: {
     flexDirection: 'row',
@@ -61,10 +62,10 @@ const styles = StyleSheet.create({
     width: 7,
     height: 7,
     borderRadius: 4,
-    backgroundColor: colors.line,
+    backgroundColor: colors.inputBorder,
   },
   dotOn: {
-    backgroundColor: colors.forest,
+    backgroundColor: colors.accentStrong,
   },
   time: {
     color: colors.hint,
