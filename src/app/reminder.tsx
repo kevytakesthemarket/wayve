@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 
 import { FirstPassBadge } from '@/components/FirstPassBadge';
 import { PrimaryButton } from '@/components/PrimaryButton';
@@ -8,14 +9,16 @@ import { TextLink } from '@/components/TextLink';
 import { PLAN_COPY } from '@/plan/copy';
 import { usePlan } from '@/plan/context';
 import { reminderBody } from '@/plan/reminder';
-import { clubById } from '@/plan/slate';
 import { colors, fonts } from '@/theme/colors';
 
 export default function ReminderScreen() {
   const router = useRouter();
-  const { activeCommitment, state } = usePlan();
+  const { activeCommitment, state, previewReminder, findClub } = usePlan();
   const body = reminderBody(state.reminder, activeCommitment?.nextAction);
-  const club = activeCommitment ? clubById(activeCommitment.clubId) : undefined;
+  const club = activeCommitment ? findClub(activeCommitment.clubId) : undefined;
+  const [previewNote, setPreviewNote] = useState<string | null>(null);
+
+  const notifyLine = notifyCopy(state.reminder?.notificationReason, Boolean(state.reminder?.notificationId));
 
   return (
     <Screen
@@ -47,12 +50,33 @@ export default function ReminderScreen() {
         <>
           <Text style={styles.body}>{body}</Text>
           <Text style={styles.note}>{PLAN_COPY.reminderNote}</Text>
+          <Text style={styles.note}>{notifyLine}</Text>
+          {Platform.OS !== 'web' && body ? (
+            <TextLink
+              label={PLAN_COPY.reminderPreview}
+              onPress={async () => {
+                const ok = await previewReminder();
+                setPreviewNote(
+                  ok
+                    ? 'Preview armed with the same if-then. Check the notification in a few seconds.'
+                    : 'Could not schedule a preview. This screen still holds the same line.',
+                );
+              }}
+            />
+          ) : null}
+          {previewNote ? <Text style={styles.note}>{previewNote}</Text> : null}
         </>
       ) : (
         <Text style={styles.note}>{PLAN_COPY.reminderEmpty}</Text>
       )}
     </Screen>
   );
+}
+
+function notifyCopy(reason: 'web' | 'denied' | 'unavailable' | undefined, armed: boolean): string {
+  if (armed) return PLAN_COPY.reminderNotifyArmed;
+  if (reason === 'denied') return PLAN_COPY.reminderNotifyDenied;
+  return PLAN_COPY.reminderNotifyWeb;
 }
 
 const styles = StyleSheet.create({

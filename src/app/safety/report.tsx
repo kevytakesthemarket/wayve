@@ -8,15 +8,20 @@ import { Screen } from '@/components/Screen';
 import { TextLink } from '@/components/TextLink';
 import { PLAN_COPY } from '@/plan/copy';
 import { usePlan } from '@/plan/context';
-import { clubById } from '@/plan/slate';
+import { personById } from '@/plan/people';
 import { colors, fonts } from '@/theme/colors';
 
 export default function ReportScreen() {
   const router = useRouter();
-  const { clubId } = useLocalSearchParams<{ clubId?: string }>();
-  const { reportClub, state } = usePlan();
-  const club = clubId ? clubById(clubId) : undefined;
-  const already = state.safety.some((item) => item.kind === 'report' && item.targetId === clubId);
+  const { clubId, personId } = useLocalSearchParams<{ clubId?: string; personId?: string }>();
+  const { reportTarget, reportClub, state, findClub } = usePlan();
+  const club = clubId ? findClub(clubId) : undefined;
+  const person = personId ? personById(personId) : undefined;
+  const targetId = person?.id ?? club?.id;
+  const targetType = person ? 'person' : 'club';
+  const already = state.safety.some(
+    (item) => item.kind === 'report' && item.targetId === targetId && item.targetType === targetType,
+  );
   const [reason, setReason] = useState('');
   const [done, setDone] = useState(already);
 
@@ -29,10 +34,11 @@ export default function ReportScreen() {
         ) : (
           <PrimaryButton
             label={PLAN_COPY.reportSubmit}
-            disabled={!club}
+            disabled={!targetId}
             onPress={() => {
-              if (!club) return;
-              reportClub(club.id, reason);
+              if (!targetId) return;
+              if (person) reportTarget('person', person.id, reason);
+              else if (club) reportClub(club.id, reason);
               setDone(true);
             }}
           />
@@ -42,6 +48,7 @@ export default function ReportScreen() {
       <TextLink label="Back" onPress={() => router.back()} />
       <Text style={styles.title}>{PLAN_COPY.reportTitle}</Text>
       <Text style={styles.lead}>{PLAN_COPY.reportLead}</Text>
+      {person ? <Text style={styles.club}>{person.name}</Text> : null}
       {club ? <Text style={styles.club}>{club.name}</Text> : null}
 
       {done ? (

@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     cursor: 'pointer',
   },
   selected: {
-    backgroundColor: colors.forest,
+    backgroundColor: colors.forestDeep,
     borderColor: colors.forest,
   },
   label: {

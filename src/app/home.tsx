@@ -12,16 +12,23 @@ import { useInterview } from '@/interview/context';
 import { PLAN_COPY } from '@/plan/copy';
 import { usePlan } from '@/plan/context';
 import { buildNextAction } from '@/plan/nextAction';
-import { weeklySlate } from '@/plan/slate';
+import { personById, type PersonRow } from '@/plan/people';
 import { scorer } from '@/scoring';
 import { colors, fonts } from '@/theme/colors';
 
 export default function HomeScreen() {
   const router = useRouter();
   const { state, reset, markStep } = useInterview();
-  const { state: plan, reset: resetPlan, commitIllGo, commitmentFor, activeCommitment } = usePlan();
+  const {
+    weekly,
+    peopleOpen,
+    reset: resetPlan,
+    commitIllGo,
+    commitmentFor,
+    activeCommitment,
+    isPersonBlocked,
+  } = usePlan();
   const gap = scorer.emptyFacetNote(state);
-  const clubs = weeklySlate(undefined, plan.blockedClubIds);
 
   useEffect(() => {
     markStep('home');
@@ -53,7 +60,7 @@ export default function HomeScreen() {
       <FirstPassBadge />
       <Text style={styles.kicker}>{PLAN_COPY.homeKicker}</Text>
       <Text style={styles.lead}>{PLAN_COPY.homeLead}</Text>
-      <Text style={styles.people}>{PLAN_COPY.homePeopleClosed}</Text>
+      <Text style={styles.people}>{peopleOpen ? PLAN_COPY.homePeopleOpen : PLAN_COPY.homePeopleClosed}</Text>
 
       {state.publicCard ? (
         <View style={styles.card}>
@@ -67,23 +74,38 @@ export default function HomeScreen() {
 
       {gap ? <Notice text={gap} /> : null}
 
-      {clubs.length === 0 ? (
+      {weekly.length === 0 ? (
         <Notice text="No clubs on this plan. Blocked rooms stay off the list — we will not invent a replacement." />
       ) : null}
 
-      {clubs.map((club) => {
+      {weekly.map((club) => {
         const nextAction = buildNextAction(club, state);
         const committed = Boolean(commitmentFor(club.id));
+        const alsoHere = peopleOpen
+          ? (club.also_at_meeting ?? [])
+              .map((id) => personById(id))
+              .filter((person): person is PersonRow => Boolean(person))
+              .filter((person) => !isPersonBlocked(person.id))
+          : [];
         return (
           <ClubCard
             key={club.id}
             club={club}
             nextAction={nextAction}
             committed={committed}
-            onIllGo={() => commitIllGo(club.id, nextAction)}
+            alsoHere={alsoHere}
+            onIllGo={() => {
+              void commitIllGo(club.id, nextAction);
+            }}
             onOpen={() => router.push(`/club/${club.id}`)}
             onReport={() => router.push({ pathname: '/safety/report', params: { clubId: club.id } })}
             onBlock={() => router.push({ pathname: '/safety/block', params: { clubId: club.id } })}
+            onReportPerson={(personId) =>
+              router.push({ pathname: '/safety/report', params: { personId } })
+            }
+            onBlockPerson={(personId) =>
+              router.push({ pathname: '/safety/block', params: { personId } })
+            }
           />
         );
       })}
@@ -96,6 +118,11 @@ export default function HomeScreen() {
           />
         </View>
       ) : null}
+
+      <View style={styles.links}>
+        <TextLink label={PLAN_COPY.officerLink} onPress={() => router.push('/officer')} />
+        <TextLink label={PLAN_COPY.campusLink} onPress={() => router.push('/campus')} muted />
+      </View>
     </Screen>
   );
 }

@@ -3,8 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { TextLink } from '@/components/TextLink';
 import { PLAN_COPY } from '@/plan/copy';
-import { isPeopleGateOpen } from '@/plan/peopleGate';
-import { personById } from '@/plan/people';
+import type { PersonRow } from '@/plan/people';
 import type { Club } from '@/plan/types';
 import { colors, fonts } from '@/theme/colors';
 
@@ -16,7 +15,9 @@ export function ClubCard({
   onOpen,
   onReport,
   onBlock,
-  interviewCount = 0,
+  alsoHere = [],
+  onReportPerson,
+  onBlockPerson,
 }: {
   club: Club;
   nextAction: string;
@@ -25,13 +26,10 @@ export function ClubCard({
   onOpen?: () => void;
   onReport?: () => void;
   onBlock?: () => void;
-  interviewCount?: number;
+  alsoHere?: PersonRow[];
+  onReportPerson?: (personId: string) => void;
+  onBlockPerson?: (personId: string) => void;
 }) {
-  const also =
-    isPeopleGateOpen(interviewCount) && club.also_at_meeting?.length
-      ? club.also_at_meeting.map((id) => personById(id)?.name).filter(Boolean)
-      : [];
-
   return (
     <View style={styles.card}>
       {onOpen ? (
@@ -51,10 +49,35 @@ export function ClubCard({
 
       {club.drop_in_ok ? <Text style={styles.drop}>{PLAN_COPY.dropIn}</Text> : null}
 
-      {also.length ? (
-        <Text style={styles.also}>
-          {PLAN_COPY.alsoAt}: {also.join(', ')}
-        </Text>
+      {alsoHere.length ? (
+        <View style={styles.alsoWrap}>
+          <Text style={styles.label}>{PLAN_COPY.alsoAt}</Text>
+          <Text style={styles.alsoNote}>{PLAN_COPY.alsoAtNote}</Text>
+          {alsoHere.map((person) => (
+            <View key={person.id} style={styles.person}>
+              <Text style={styles.personName}>{person.name}</Text>
+              <Text style={styles.personNote}>{person.note}</Text>
+              {onReportPerson || onBlockPerson ? (
+                <View style={styles.row}>
+                  {onReportPerson ? (
+                    <TextLink
+                      label={PLAN_COPY.safetyLink}
+                      onPress={() => onReportPerson(person.id)}
+                      muted
+                    />
+                  ) : null}
+                  {onBlockPerson ? (
+                    <TextLink
+                      label={PLAN_COPY.blockLink}
+                      onPress={() => onBlockPerson(person.id)}
+                      muted
+                    />
+                  ) : null}
+                </View>
+              ) : null}
+            </View>
+          ))}
+        </View>
       ) : null}
 
       {committed ? (
@@ -88,7 +111,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 18,
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: colors.forest,
     gap: 16,
   },
   name: {
@@ -121,10 +144,31 @@ const styles = StyleSheet.create({
     color: colors.forest,
     fontWeight: '600',
   },
-  also: {
+  alsoWrap: {
+    gap: 10,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: colors.line,
+    paddingTop: 12,
+  },
+  alsoNote: {
     fontFamily: fonts.sans,
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: 13,
+    lineHeight: 18,
+    color: colors.muted,
+  },
+  person: {
+    gap: 4,
+  },
+  personName: {
+    fontFamily: fonts.sans,
+    fontSize: 16,
+    fontWeight: '700',
+    color: colors.ink,
+  },
+  personNote: {
+    fontFamily: fonts.sans,
+    fontSize: 14,
+    lineHeight: 20,
     color: colors.muted,
   },
   done: {

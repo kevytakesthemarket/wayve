@@ -55,3 +55,14 @@ export function schoolFromEmail(email: string): string {
 export function looksLikeEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 }
+
+/** Campus network gate — personal inboxes are not a school. */
+export function isSchoolEmail(value: string): boolean {
+  if (!looksLikeEmail(value)) return false;
+  const domain = value.trim().toLowerCase().split('@')[1] ?? '';
+  if (domain.endsWith('.edu') || /\.edu\.[a-z]{2,3}$/.test(domain) || domain.endsWith('.ac.uk')) {
+    return true;
+  }
+  const stripped = domain.replace(/^(mail|students|student|email|u|alumni)\./, '');
+  return Boolean(KNOWN[domain] || KNOWN[stripped]);
+}

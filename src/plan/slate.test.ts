@@ -15,6 +15,14 @@ describe('weekly slate', () => {
     assert.ok(slate.some((club) => club.id === 'pickup-soccer' && club.drop_in_ok));
   });
 
+  it('caps the week at 3 and keeps a drop-in when one exists', () => {
+    const extra = { ...CLUB_CATALOG[0], id: 'zine-table', name: 'Union Zine Table', drop_in_ok: false };
+    const slate = weeklySlate([extra, ...CLUB_CATALOG.filter((club) => !club.drop_in_ok), CLUB_CATALOG[1]]);
+    assert.equal(slate.length, 3);
+    assert.equal(slate.filter((club) => club.drop_in_ok).length, 1);
+    assert.ok(slate.some((club) => club.id === 'pickup-soccer'));
+  });
+
   it('does not list a club that lacks first_15_script', () => {
     const ghost: Club = {
       ...CLUB_CATALOG[0],

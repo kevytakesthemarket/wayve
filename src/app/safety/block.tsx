@@ -7,15 +7,22 @@ import { Screen } from '@/components/Screen';
 import { TextLink } from '@/components/TextLink';
 import { PLAN_COPY } from '@/plan/copy';
 import { usePlan } from '@/plan/context';
-import { clubById } from '@/plan/slate';
+import { personById } from '@/plan/people';
 import { colors, fonts } from '@/theme/colors';
 
 export default function BlockScreen() {
   const router = useRouter();
-  const { clubId } = useLocalSearchParams<{ clubId?: string }>();
-  const { blockClub, isBlocked } = usePlan();
-  const club = clubId ? clubById(clubId) : undefined;
-  const [done, setDone] = useState(Boolean(clubId && isBlocked(clubId)));
+  const { clubId, personId } = useLocalSearchParams<{ clubId?: string; personId?: string }>();
+  const { blockClub, blockPerson, isBlocked, isPersonBlocked, findClub } = usePlan();
+  const club = clubId ? findClub(clubId) : undefined;
+  const person = personId ? personById(personId) : undefined;
+  const [done, setDone] = useState(
+    Boolean((clubId && isBlocked(clubId)) || (personId && isPersonBlocked(personId))),
+  );
+
+  const label = person ? PLAN_COPY.blockConfirmPerson : PLAN_COPY.blockConfirm;
+  const lead = person ? PLAN_COPY.blockLeadPerson : PLAN_COPY.blockLead;
+  const doneCopy = person ? PLAN_COPY.blockDonePerson : PLAN_COPY.blockDone;
 
   return (
     <Screen
@@ -25,11 +32,12 @@ export default function BlockScreen() {
           <PrimaryButton label="Back to this week" onPress={() => router.replace('/home')} />
         ) : (
           <PrimaryButton
-            label={PLAN_COPY.blockConfirm}
-            disabled={!club}
+            label={label}
+            disabled={!club && !person}
             onPress={() => {
-              if (!club) return;
-              blockClub(club.id);
+              if (person) blockPerson(person.id);
+              else if (club) blockClub(club.id);
+              else return;
               setDone(true);
             }}
           />
@@ -38,9 +46,10 @@ export default function BlockScreen() {
     >
       <TextLink label="Back" onPress={() => router.back()} />
       <Text style={styles.title}>{PLAN_COPY.blockTitle}</Text>
-      <Text style={styles.lead}>{PLAN_COPY.blockLead}</Text>
+      <Text style={styles.lead}>{lead}</Text>
+      {person ? <Text style={styles.club}>{person.name}</Text> : null}
       {club ? <Text style={styles.club}>{club.name}</Text> : null}
-      {done ? <Text style={styles.done}>{PLAN_COPY.blockDone}</Text> : null}
+      {done ? <Text style={styles.done}>{doneCopy}</Text> : null}
     </Screen>
   );
 }

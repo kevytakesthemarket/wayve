@@ -22,7 +22,8 @@ export function PrimaryButton({
         styles.btn,
         muted && styles.muted,
         disabled && styles.disabled,
-        pressed && !disabled && styles.pressed,
+        pressed && !disabled && !muted && styles.pressed,
+        pressed && !disabled && muted && styles.mutedPressed,
       ]}
     >
       <Text style={[styles.label, muted && styles.mutedLabel]}>{label}</Text>
@@ -32,7 +33,7 @@ export function PrimaryButton({
 
 const styles = StyleSheet.create({
   btn: {
-    backgroundColor: colors.forest,
+    backgroundColor: colors.forestDeep,
     borderRadius: 14,
     paddingVertical: 16,
     paddingHorizontal: 18,
@@ -44,11 +45,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.line,
   },
+  mutedPressed: {
+    backgroundColor: colors.paperDeep,
+  },
   disabled: {
     opacity: 0.4,
   },
   pressed: {
-    backgroundColor: colors.forestDeep,
+    backgroundColor: '#5B21B6',
   },
   label: {
     color: colors.cream,

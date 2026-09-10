@@ -2,12 +2,16 @@ import type { ArmedReminder } from './types';
 
 /**
  * Day-of reminder hook.
- * Today: persist the exact committed next_action string.
- * Later: Notifications.scheduleNotificationAsync({ content: { body: nextAction } })
- *        or a Supabase / server push. Do not invent a new sentence.
+ * Persist the exact committed next_action string. The notification (when Expo Go
+ * allows it) restates this same body. Do not invent a new sentence.
  */
-export function armDayOfReminder(clubId: string, nextAction: string, now = Date.now()): ArmedReminder {
-  return { clubId, nextAction, armedAt: now };
+export function armDayOfReminder(
+  clubId: string,
+  nextAction: string,
+  now = Date.now(),
+  extra: Partial<Pick<ArmedReminder, 'notificationId' | 'scheduledFor' | 'notificationReason'>> = {},
+): ArmedReminder {
+  return { clubId, nextAction, armedAt: now, ...extra };
 }
 
 export function reminderBody(reminder: ArmedReminder | null, fallback?: string): string | null {

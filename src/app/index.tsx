@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
+import { WayveMark } from '@/components/WayveMark';
 import { COPY } from '@/interview/copy';
 import { useInterview } from '@/interview/context';
 import { usePlan } from '@/plan/context';
@@ -41,7 +42,7 @@ export default function WelcomeScreen() {
         </View>
       }
     >
-      <Text style={styles.mark}>Wayve</Text>
+      <WayveMark />
       <Text style={styles.kicker}>{COPY.welcomeKicker}</Text>
       <Text style={styles.line}>{COPY.friendsNotDating(school)}</Text>
       <Text style={styles.body}>{COPY.welcomeBody}</Text>
@@ -84,12 +85,6 @@ function routeForStep(
 }
 
 const styles = StyleSheet.create({
-  mark: {
-    marginTop: 48,
-    fontFamily: fonts.serif,
-    fontSize: 48,
-    color: colors.ink,
-  },
   kicker: {
     fontFamily: fonts.sans,
     fontSize: 20,

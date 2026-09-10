@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { looksLikeEmail, schoolFromEmail } from './school';
+import { looksLikeEmail, schoolFromEmail, isSchoolEmail } from './school';
 
 describe('schoolFromEmail', () => {
   it('maps known .edu domains', () => {
@@ -18,5 +18,13 @@ describe('schoolFromEmail', () => {
   it('validates email shape', () => {
     assert.equal(looksLikeEmail('you@school.edu'), true);
     assert.equal(looksLikeEmail('nope'), false);
+  });
+
+  it('gates personal inboxes out of the campus network', () => {
+    assert.equal(isSchoolEmail('kevinb27@uw.edu'), true);
+    assert.equal(isSchoolEmail('you@school.edu'), true);
+    assert.equal(isSchoolEmail('nico@u.northwestern.edu'), true);
+    assert.equal(isSchoolEmail('you@gmail.com'), false);
+    assert.equal(isSchoolEmail('not-an-email'), false);
   });
 });
