@@ -42,7 +42,7 @@ export default function SignupScreen() {
       }
     >
       <WayveMark size="md" />
-      <Text style={styles.question}>School email, first name, year, and whether you live on campus.</Text>
+      <Text style={styles.question}>School email</Text>
       <Text style={styles.line}>{COPY.friendsNotDating(school)}</Text>
 
       <Text style={styles.label}>School email</Text>
@@ -60,9 +60,7 @@ export default function SignupScreen() {
         <Text style={styles.soft}>That doesn’t look like an email yet.</Text>
       )}
       {email && looksLikeEmail(email) && !schoolOk ? (
-        <Text style={styles.soft}>
-          Use a school email (.edu). Personal inboxes are not a campus friends-and-clubs network.
-        </Text>
+        <Text style={styles.soft}>Use a school email (.edu).</Text>
       ) : null}
 
       <Text style={styles.label}>First name</Text>

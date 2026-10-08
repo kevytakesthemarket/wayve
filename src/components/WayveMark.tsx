@@ -12,11 +12,11 @@ export function WayveMark({ size = 'lg' }: { size?: 'lg' | 'md' }) {
 
 const styles = StyleSheet.create({
   mark: {
-    marginTop: 36,
+    marginTop: 24,
     fontFamily: fonts.serif,
     fontStyle: 'italic',
-    fontSize: 52,
-    lineHeight: 58,
+    fontSize: 48,
+    lineHeight: 54,
     color: colors.forest,
     letterSpacing: 0.4,
   },

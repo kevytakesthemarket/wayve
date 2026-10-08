@@ -2,7 +2,6 @@ import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 
-import { FirstPassBadge } from '@/components/FirstPassBadge';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { TextLink } from '@/components/TextLink';
@@ -18,11 +17,9 @@ export default function ReminderScreen() {
   const club = activeCommitment ? findClub(activeCommitment.clubId) : undefined;
   const [previewNote, setPreviewNote] = useState<string | null>(null);
 
-  const notifyLine = notifyCopy(state.reminder?.notificationReason, Boolean(state.reminder?.notificationId));
-
   return (
     <Screen
-      extraBottom={32}
+      extraBottom={24}
       footer={
         body && activeCommitment ? (
           <View style={styles.footerCol}>
@@ -37,30 +34,23 @@ export default function ReminderScreen() {
             />
           </View>
         ) : (
-          <PrimaryButton label="Back to this week" onPress={() => router.replace('/home')} />
+          <PrimaryButton label="This week" onPress={() => router.replace('/home')} />
         )
       }
     >
       <TextLink label="Back" onPress={() => router.back()} />
-      <FirstPassBadge />
       <Text style={styles.title}>{PLAN_COPY.reminderTitle}</Text>
       {club ? <Text style={styles.club}>{club.name}</Text> : null}
 
       {body ? (
         <>
           <Text style={styles.body}>{body}</Text>
-          <Text style={styles.note}>{PLAN_COPY.reminderNote}</Text>
-          <Text style={styles.note}>{notifyLine}</Text>
-          {Platform.OS !== 'web' && body ? (
+          {Platform.OS !== 'web' ? (
             <TextLink
               label={PLAN_COPY.reminderPreview}
               onPress={async () => {
                 const ok = await previewReminder();
-                setPreviewNote(
-                  ok
-                    ? 'Preview armed with the same if-then. Check the notification in a few seconds.'
-                    : 'Could not schedule a preview. This screen still holds the same line.',
-                );
+                setPreviewNote(ok ? 'Armed.' : 'Could not schedule.');
               }}
             />
           ) : null}
@@ -73,36 +63,30 @@ export default function ReminderScreen() {
   );
 }
 
-function notifyCopy(reason: 'web' | 'denied' | 'unavailable' | undefined, armed: boolean): string {
-  if (armed) return PLAN_COPY.reminderNotifyArmed;
-  if (reason === 'denied') return PLAN_COPY.reminderNotifyDenied;
-  return PLAN_COPY.reminderNotifyWeb;
-}
-
 const styles = StyleSheet.create({
   title: {
     fontFamily: fonts.serif,
-    fontSize: 32,
-    lineHeight: 38,
+    fontSize: 28,
+    lineHeight: 34,
     color: colors.ink,
   },
   club: {
     fontFamily: fonts.sans,
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
     color: colors.forest,
   },
   body: {
     fontFamily: fonts.serif,
-    fontSize: 24,
-    lineHeight: 34,
+    fontSize: 22,
+    lineHeight: 30,
     color: colors.ink,
-    marginTop: 8,
+    marginTop: 4,
   },
   note: {
     fontFamily: fonts.sans,
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: 14,
+    lineHeight: 20,
     color: colors.muted,
   },
   footerCol: {

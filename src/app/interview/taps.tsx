@@ -53,7 +53,6 @@ export default function TapsScreen() {
         }}
       />
       <Text style={styles.q}>{COPY.tapsLead}</Text>
-      <Text style={styles.helper}>{COPY.tapsHelper}</Text>
 
       <Text style={styles.label}>{COPY.slackLabel}</Text>
       <View style={styles.wrap}>
@@ -83,12 +82,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 32,
     color: colors.ink,
-  },
-  helper: {
-    fontFamily: fonts.sans,
-    fontSize: 15,
-    lineHeight: 22,
-    color: colors.muted,
   },
   label: {
     fontFamily: fonts.sans,

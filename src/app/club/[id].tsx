@@ -2,7 +2,6 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { ClubCard } from '@/components/ClubCard';
-import { FirstPassBadge } from '@/components/FirstPassBadge';
 import { Screen } from '@/components/Screen';
 import { TextLink } from '@/components/TextLink';
 import { useInterview } from '@/interview/context';
@@ -39,8 +38,7 @@ export default function ClubDetailScreen() {
 
   return (
     <Screen extraBottom={32}>
-      <TextLink label="Back to this week" onPress={() => router.back()} />
-      <FirstPassBadge />
+      <TextLink label="Back" onPress={() => router.back()} />
       <ClubCard
         club={club}
         nextAction={nextAction}

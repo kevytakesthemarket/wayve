@@ -14,10 +14,9 @@ import { colors, fonts } from '@/theme/colors';
 export default function AfterVisitScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { recordVisit, visitFor, commitmentFor, findClub } = usePlan();
+  const { recordVisit, visitFor, findClub } = usePlan();
   const club = id ? findClub(id) : undefined;
   const existing = id ? visitFor(id) : undefined;
-  const commitment = id ? commitmentFor(id) : undefined;
 
   const [stay, setStay] = useState<boolean | null>(existing?.stay_past_15 ?? null);
   const [ret, setRet] = useState<boolean | null>(existing?.return_14d ?? null);
@@ -27,7 +26,7 @@ export default function AfterVisitScreen() {
     return (
       <Screen>
         <TextLink label="Back" onPress={() => router.back()} />
-        <Text style={styles.title}>That visit is not on your plan.</Text>
+        <Text style={styles.title}>Not on your plan.</Text>
       </Screen>
     );
   }
@@ -36,7 +35,7 @@ export default function AfterVisitScreen() {
 
   return (
     <Screen
-      extraBottom={32}
+      extraBottom={24}
       footer={
         <PrimaryButton
           label={PLAN_COPY.afterSave}
@@ -56,30 +55,25 @@ export default function AfterVisitScreen() {
     >
       <TextLink label="Back" onPress={() => router.back()} />
       <Text style={styles.title}>{club.name}</Text>
-      <Text style={styles.lead}>{PLAN_COPY.afterLead}</Text>
-
-      {commitment ? <Text style={styles.committed}>{commitment.nextAction}</Text> : null}
 
       <Text style={styles.q}>{PLAN_COPY.stayQ}</Text>
-      <Text style={styles.tag}>stay_past_15</Text>
       <View style={styles.wrap}>
         <ChoiceChip label={PLAN_COPY.yes} selected={stay === true} onPress={() => setStay(true)} />
         <ChoiceChip label={PLAN_COPY.no} selected={stay === false} onPress={() => setStay(false)} />
       </View>
 
       <Text style={styles.q}>{PLAN_COPY.returnQ}</Text>
-      <Text style={styles.tag}>return_14d</Text>
       <View style={styles.wrap}>
         <ChoiceChip label={PLAN_COPY.yes} selected={ret === true} onPress={() => setRet(true)} />
         <ChoiceChip label={PLAN_COPY.no} selected={ret === false} onPress={() => setRet(false)} />
       </View>
 
       <Text style={styles.q}>{PLAN_COPY.sceneQ}</Text>
-      <Text style={styles.helper}>{PLAN_COPY.sceneHelper}</Text>
       <ExpandingText
+        compact
         value={scene}
         onChangeText={setScene}
-        placeholder="What was actually happening."
+        placeholder={PLAN_COPY.sceneHelper}
       />
     </Screen>
   );
@@ -88,41 +82,17 @@ export default function AfterVisitScreen() {
 const styles = StyleSheet.create({
   title: {
     fontFamily: fonts.serif,
-    fontSize: 28,
-    lineHeight: 34,
-    color: colors.ink,
-  },
-  lead: {
-    fontFamily: fonts.sans,
-    fontSize: 16,
-    lineHeight: 24,
-    color: colors.muted,
-  },
-  committed: {
-    fontFamily: fonts.serif,
-    fontSize: 18,
-    lineHeight: 26,
+    fontSize: 26,
+    lineHeight: 32,
     color: colors.ink,
   },
   q: {
-    fontFamily: fonts.serif,
-    fontSize: 22,
-    lineHeight: 30,
-    color: colors.ink,
-    marginTop: 8,
-  },
-  tag: {
     fontFamily: fonts.sans,
-    fontSize: 12,
-    fontWeight: '700',
-    letterSpacing: 0.4,
-    color: colors.hint,
-  },
-  helper: {
-    fontFamily: fonts.sans,
-    fontSize: 15,
+    fontSize: 16,
+    fontWeight: '600',
     lineHeight: 22,
-    color: colors.muted,
+    color: colors.ink,
+    marginTop: 4,
   },
   wrap: {
     flexDirection: 'row',

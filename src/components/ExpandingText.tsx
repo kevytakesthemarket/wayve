@@ -6,10 +6,12 @@ export function ExpandingText({
   value,
   onChangeText,
   placeholder,
+  compact,
 }: {
   value: string;
   onChangeText: (text: string) => void;
   placeholder: string;
+  compact?: boolean;
 }) {
   return (
     <TextInput
@@ -22,7 +24,7 @@ export function ExpandingText({
       scrollEnabled
       autoCorrect
       autoCapitalize="sentences"
-      style={styles.input}
+      style={[styles.input, compact && styles.compact]}
     />
   );
 }
@@ -42,5 +44,10 @@ const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 24,
     color: colors.ink,
+  },
+  compact: {
+    minHeight: 96,
+    maxHeight: 180,
+    borderRadius: 12,
   },
 });

@@ -47,7 +47,7 @@ export default function OfficerIntakeScreen() {
       extraBottom={32}
       footer={
         listed ? (
-          <PrimaryButton label="Back to this week" onPress={() => router.replace('/home')} />
+          <PrimaryButton label="This week" onPress={() => router.replace('/home')} />
         ) : (
           <PrimaryButton
             label={PLAN_COPY.officerSubmit}
@@ -79,6 +79,7 @@ export default function OfficerIntakeScreen() {
 
       <Text style={styles.label}>{PLAN_COPY.officerFirst15}</Text>
       <ExpandingText
+        compact
         value={draft.first_15_script}
         onChangeText={(first_15_script) => setDraft((prev) => ({ ...prev, first_15_script }))}
         placeholder="Walk in. Put your bag down. Start the thing. The first 15 minutes is…"
@@ -86,6 +87,7 @@ export default function OfficerIntakeScreen() {
 
       <Text style={styles.label}>{PLAN_COPY.officerStay}</Text>
       <ExpandingText
+        compact
         value={draft.stay_leave}
         onChangeText={(stay_leave) => setDraft((prev) => ({ ...prev, stay_leave }))}
         placeholder="Stay if… Leave if…"
@@ -111,6 +113,7 @@ export default function OfficerIntakeScreen() {
 
       <Text style={styles.label}>{PLAN_COPY.officerNotFit}</Text>
       <ExpandingText
+        compact
         value={draft.not_fit_if}
         onChangeText={(not_fit_if) => setDraft((prev) => ({ ...prev, not_fit_if }))}
         placeholder="You need a mixer, a roster, or a pledge process."

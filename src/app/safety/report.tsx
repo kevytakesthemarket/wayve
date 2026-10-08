@@ -30,7 +30,7 @@ export default function ReportScreen() {
       extraBottom={32}
       footer={
         done ? (
-          <PrimaryButton label="Back to this week" onPress={() => router.replace('/home')} />
+          <PrimaryButton label="This week" onPress={() => router.replace('/home')} />
         ) : (
           <PrimaryButton
             label={PLAN_COPY.reportSubmit}
@@ -55,6 +55,7 @@ export default function ReportScreen() {
         <Text style={styles.done}>{PLAN_COPY.reportDone}</Text>
       ) : (
         <ExpandingText
+          compact
           value={reason}
           onChangeText={setReason}
           placeholder={PLAN_COPY.reportPlaceholder}
@@ -67,8 +68,8 @@ export default function ReportScreen() {
 const styles = StyleSheet.create({
   title: {
     fontFamily: fonts.serif,
-    fontSize: 32,
-    lineHeight: 38,
+    fontSize: 28,
+    lineHeight: 34,
     color: colors.ink,
   },
   lead: {

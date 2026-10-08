@@ -29,7 +29,7 @@ export default function BlockScreen() {
       extraBottom={32}
       footer={
         done ? (
-          <PrimaryButton label="Back to this week" onPress={() => router.replace('/home')} />
+          <PrimaryButton label="This week" onPress={() => router.replace('/home')} />
         ) : (
           <PrimaryButton
             label={label}
@@ -57,8 +57,8 @@ export default function BlockScreen() {
 const styles = StyleSheet.create({
   title: {
     fontFamily: fonts.serif,
-    fontSize: 32,
-    lineHeight: 38,
+    fontSize: 28,
+    lineHeight: 34,
     color: colors.ink,
   },
   lead: {

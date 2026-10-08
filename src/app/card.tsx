@@ -17,7 +17,7 @@ export default function PublicCardScreen() {
 
   return (
     <Screen
-      extraBottom={32}
+      extraBottom={24}
       footer={
         <PrimaryButton
           label={PLAN_COPY.cardSave}
@@ -32,11 +32,11 @@ export default function PublicCardScreen() {
       <TextLink label="Back" onPress={() => router.back()} />
       <Text style={styles.title}>{PLAN_COPY.cardTitle}</Text>
       <Text style={styles.privacy}>{PLAN_COPY.cardPrivacy}</Text>
-      <Text style={styles.hint}>{PLAN_COPY.cardHint}</Text>
       <ExpandingText
+        compact
         value={card}
         onChangeText={setCard}
-        placeholder="Your words. We will not rewrite them."
+        placeholder={PLAN_COPY.cardHint}
       />
     </Screen>
   );
@@ -45,17 +45,11 @@ export default function PublicCardScreen() {
 const styles = StyleSheet.create({
   title: {
     fontFamily: fonts.serif,
-    fontSize: 28,
-    lineHeight: 34,
+    fontSize: 26,
+    lineHeight: 32,
     color: colors.ink,
   },
   privacy: {
-    fontFamily: fonts.sans,
-    fontSize: 16,
-    lineHeight: 24,
-    color: colors.forest,
-  },
-  hint: {
     fontFamily: fonts.sans,
     fontSize: 15,
     lineHeight: 22,

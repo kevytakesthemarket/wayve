@@ -24,7 +24,7 @@ export default function WelcomeScreen() {
         <View style={styles.footerCol}>
           {hasProgress ? (
             <PrimaryButton
-              label="Continue where you left off"
+              label="Continue"
               onPress={() => router.push(routeForStep(state.step))}
             />
           ) : null}
@@ -45,7 +45,6 @@ export default function WelcomeScreen() {
       <WayveMark />
       <Text style={styles.kicker}>{COPY.welcomeKicker}</Text>
       <Text style={styles.line}>{COPY.friendsNotDating(school)}</Text>
-      <Text style={styles.body}>{COPY.welcomeBody}</Text>
     </Screen>
   );
 }
@@ -86,24 +85,16 @@ function routeForStep(
 
 const styles = StyleSheet.create({
   kicker: {
-    fontFamily: fonts.sans,
-    fontSize: 20,
-    lineHeight: 28,
+    fontFamily: fonts.serif,
+    fontSize: 26,
+    lineHeight: 32,
     color: colors.ink,
-    fontWeight: '600',
   },
   line: {
     fontFamily: fonts.sans,
-    fontSize: 17,
-    lineHeight: 24,
-    color: colors.forest,
-  },
-  body: {
-    fontFamily: fonts.sans,
-    fontSize: 17,
-    lineHeight: 26,
+    fontSize: 16,
+    lineHeight: 22,
     color: colors.muted,
-    marginTop: 8,
   },
   footerCol: {
     gap: 10,

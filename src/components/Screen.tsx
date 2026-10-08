@@ -51,8 +51,8 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 22,
-    paddingTop: 8,
-    gap: 16,
+    paddingTop: 12,
+    gap: 14,
   },
   footer: {
     paddingHorizontal: 22,
