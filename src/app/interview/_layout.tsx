@@ -8,7 +8,7 @@ export default function InterviewLayout() {
       screenOptions={{
         headerShown: false,
         contentStyle: { backgroundColor: colors.paper },
-        animation: 'slide_from_right',
+        animation: 'none',
       }}
     />
   );

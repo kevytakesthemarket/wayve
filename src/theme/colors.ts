@@ -1,33 +1,33 @@
 import { Platform } from 'react-native';
 
-/** Calm campus paper — not a nightclub, not a dating app. */
+/** Wireframe skeleton — no designed chrome. */
 export const colors = {
-  paper: '#F4EFE4',
-  paperDeep: '#E8E0D0',
-  card: '#FFFCF6',
-  ink: '#1C2A22',
-  muted: '#5C6B62',
-  hint: '#7A877E',
-  line: '#D4CBB8',
-  forest: '#2F5D50',
-  forestDeep: '#23463C',
-  cream: '#FBF7EE',
-  warning: '#6B5344',
-  warningWash: '#F3E6D4',
-  firstPass: '#8A5A2B',
+  paper: '#F2F2F2',
+  paperDeep: '#E6E6E6',
+  card: '#FFFFFF',
+  ink: '#111111',
+  muted: '#666666',
+  hint: '#888888',
+  line: '#CCCCCC',
+  forest: '#111111',
+  forestDeep: '#111111',
+  cream: '#FFFFFF',
+  warning: '#8A3B2A',
+  warningWash: '#F0E4E0',
+  firstPass: '#666666',
 } as const;
 
 export const fonts = Platform.select({
   ios: {
-    serif: 'Georgia',
+    serif: 'System',
     sans: 'System',
   },
   android: {
-    serif: 'serif',
+    serif: 'sans-serif',
     sans: 'sans-serif',
   },
   default: {
-    serif: 'Georgia',
+    serif: 'system-ui',
     sans: 'system-ui',
   },
 })!;

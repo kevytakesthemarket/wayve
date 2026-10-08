@@ -6,6 +6,7 @@ import { ChoiceChip } from '@/components/ChoiceChip';
 import { InterviewChrome } from '@/components/InterviewChrome';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
+import { Title } from '@/components/Title';
 import { COPY } from '@/interview/copy';
 import { useInterview } from '@/interview/context';
 import { ENERGIES, SLACK_NIGHTS, type Energy, type SlackNight } from '@/interview/types';
@@ -52,9 +53,7 @@ export default function TapsScreen() {
           router.back();
         }}
       />
-      <Text style={styles.q}>{COPY.tapsLead}</Text>
-      <Text style={styles.helper}>{COPY.tapsHelper}</Text>
-
+      <Title>Taps</Title>
       <Text style={styles.label}>{COPY.slackLabel}</Text>
       <View style={styles.wrap}>
         {SLACK_NIGHTS.map((night) => (
@@ -66,7 +65,6 @@ export default function TapsScreen() {
           />
         ))}
       </View>
-
       <Text style={styles.label}>{COPY.energyLabel}</Text>
       <View style={styles.wrap}>
         {ENERGIES.map((item) => (
@@ -78,24 +76,10 @@ export default function TapsScreen() {
 }
 
 const styles = StyleSheet.create({
-  q: {
-    fontFamily: fonts.serif,
-    fontSize: 24,
-    lineHeight: 32,
-    color: colors.ink,
-  },
-  helper: {
-    fontFamily: fonts.sans,
-    fontSize: 15,
-    lineHeight: 22,
-    color: colors.muted,
-  },
   label: {
     fontFamily: fonts.sans,
     fontSize: 13,
-    fontWeight: '600',
     color: colors.muted,
-    marginTop: 6,
   },
   wrap: {
     flexDirection: 'row',

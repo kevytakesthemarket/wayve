@@ -3,32 +3,27 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
-import { COPY } from '@/interview/copy';
+import { Title } from '@/components/Title';
 import { useInterview } from '@/interview/context';
 import { usePlan } from '@/plan/context';
 import { colors, fonts } from '@/theme/colors';
 
 export default function WelcomeScreen() {
   const router = useRouter();
-  const { state, reset } = useInterview();
+  const { state, reset, markStep } = useInterview();
   const { reset: resetPlan } = usePlan();
-  const school = state.signup.schoolName && state.signup.schoolName !== 'your school'
-    ? state.signup.schoolName
-    : 'your campus';
   const hasProgress = state.step !== 'welcome' && (state.signup.firstName || state.startedAt);
 
   return (
     <Screen
       footer={
-        <View style={styles.footerCol}>
+        <View style={styles.col}>
           {hasProgress ? (
-            <PrimaryButton
-              label="Continue where you left off"
-              onPress={() => router.push(routeForStep(state.step))}
-            />
+            <PrimaryButton label="Continue" onPress={() => router.push(routeForStep(state.step))} />
           ) : null}
           <PrimaryButton
-            label={hasProgress ? 'Start over' : COPY.welcomeCta}
+            label={hasProgress ? 'Start over' : 'Start'}
+            muted={!!hasProgress}
             onPress={async () => {
               if (hasProgress) {
                 await resetPlan();
@@ -36,15 +31,21 @@ export default function WelcomeScreen() {
               }
               router.push('/signup');
             }}
-            muted={!!hasProgress}
+          />
+          <PrimaryButton
+            label="Skip to home"
+            muted
+            onPress={() => {
+              markStep('home');
+              router.replace('/home');
+            }}
           />
         </View>
       }
     >
-      <Text style={styles.mark}>Wayve</Text>
-      <Text style={styles.kicker}>{COPY.welcomeKicker}</Text>
-      <Text style={styles.line}>{COPY.friendsNotDating(school)}</Text>
-      <Text style={styles.body}>{COPY.welcomeBody}</Text>
+      <Title>Wayve</Title>
+      <Text style={styles.sub}>Friends + clubs. Not dating.</Text>
+      <Text style={styles.sub}>Skeleton</Text>
     </Screen>
   );
 }
@@ -84,33 +85,12 @@ function routeForStep(
 }
 
 const styles = StyleSheet.create({
-  mark: {
-    marginTop: 48,
-    fontFamily: fonts.serif,
-    fontSize: 48,
-    color: colors.ink,
-  },
-  kicker: {
+  sub: {
     fontFamily: fonts.sans,
-    fontSize: 20,
-    lineHeight: 28,
-    color: colors.ink,
-    fontWeight: '600',
-  },
-  line: {
-    fontFamily: fonts.sans,
-    fontSize: 17,
-    lineHeight: 24,
-    color: colors.forest,
-  },
-  body: {
-    fontFamily: fonts.sans,
-    fontSize: 17,
-    lineHeight: 26,
+    fontSize: 14,
     color: colors.muted,
-    marginTop: 8,
   },
-  footerCol: {
-    gap: 10,
+  col: {
+    gap: 8,
   },
 });

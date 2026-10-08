@@ -50,16 +50,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   content: {
-    paddingHorizontal: 22,
-    paddingTop: 8,
-    gap: 16,
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    gap: 10,
   },
   footer: {
-    paddingHorizontal: 22,
+    paddingHorizontal: 16,
     paddingBottom: Platform.OS === 'ios' ? 12 : 16,
     paddingTop: 8,
     backgroundColor: colors.paper,
-    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopWidth: 1,
     borderTopColor: colors.line,
   },
 });

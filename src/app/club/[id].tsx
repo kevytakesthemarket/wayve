@@ -1,52 +1,59 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { ClubCard } from '@/components/ClubCard';
-import { FirstPassBadge } from '@/components/FirstPassBadge';
 import { Screen } from '@/components/Screen';
 import { TextLink } from '@/components/TextLink';
+import { Title } from '@/components/Title';
 import { useInterview } from '@/interview/context';
 import { PLAN_COPY } from '@/plan/copy';
 import { usePlan } from '@/plan/context';
 import { buildNextAction } from '@/plan/nextAction';
-import { clubById } from '@/plan/slate';
-import { colors, fonts } from '@/theme/colors';
+import { personById, type PersonRow } from '@/plan/people';
 
 export default function ClubDetailScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { state } = useInterview();
-  const { commitIllGo, commitmentFor, isBlocked } = usePlan();
-  const club = id ? clubById(id) : undefined;
+  const { commitIllGo, commitmentFor, isBlocked, findClub, peopleOpen, isPersonBlocked } = usePlan();
+  const club = id ? findClub(id) : undefined;
 
   if (!club || isBlocked(club.id)) {
     return (
       <Screen>
         <TextLink label="Back" onPress={() => router.back()} />
-        <Text style={styles.missing}>This club is not on your plan.</Text>
+        <Title>Club</Title>
       </Screen>
     );
   }
 
   const nextAction = buildNextAction(club, state);
-  const committed = Boolean(commitmentFor(club.id));
+  const alsoHere = peopleOpen
+    ? (club.also_at_meeting ?? [])
+        .map((personId) => personById(personId))
+        .filter((person): person is PersonRow => Boolean(person))
+        .filter((person) => !isPersonBlocked(person.id))
+    : [];
 
   return (
-    <Screen extraBottom={32}>
-      <TextLink label="Back to this week" onPress={() => router.back()} />
-      <FirstPassBadge />
+    <Screen>
+      <TextLink label="Back" onPress={() => router.back()} />
+      <Title>Club</Title>
       <ClubCard
         club={club}
         nextAction={nextAction}
-        committed={committed}
-        onIllGo={() => commitIllGo(club.id, nextAction)}
+        committed={Boolean(commitmentFor(club.id))}
+        alsoHere={alsoHere}
+        onIllGo={() => {
+          void commitIllGo(club.id, nextAction);
+        }}
         onReport={() => router.push({ pathname: '/safety/report', params: { clubId: club.id } })}
         onBlock={() => router.push({ pathname: '/safety/block', params: { clubId: club.id } })}
       />
-      {committed ? (
+      {commitmentFor(club.id) ? (
         <View style={styles.links}>
-          <TextLink label={PLAN_COPY.reminderLink} onPress={() => router.push('/reminder')} />
-          <TextLink label={PLAN_COPY.afterLink} onPress={() => router.push(`/after/${club.id}`)} />
+          <TextLink label="Reminder" onPress={() => router.push('/reminder')} />
+          <TextLink label="After" onPress={() => router.push(`/after/${club.id}`)} />
         </View>
       ) : null}
     </Screen>
@@ -54,13 +61,8 @@ export default function ClubDetailScreen() {
 }
 
 const styles = StyleSheet.create({
-  missing: {
-    fontFamily: fonts.serif,
-    fontSize: 22,
-    lineHeight: 30,
-    color: colors.ink,
-  },
   links: {
-    gap: 10,
+    flexDirection: 'row',
+    gap: 16,
   },
 });

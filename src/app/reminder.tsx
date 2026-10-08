@@ -1,87 +1,58 @@
 import { useRouter } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { FirstPassBadge } from '@/components/FirstPassBadge';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { TextLink } from '@/components/TextLink';
+import { Title } from '@/components/Title';
 import { PLAN_COPY } from '@/plan/copy';
 import { usePlan } from '@/plan/context';
 import { reminderBody } from '@/plan/reminder';
-import { clubById } from '@/plan/slate';
 import { colors, fonts } from '@/theme/colors';
 
 export default function ReminderScreen() {
   const router = useRouter();
-  const { activeCommitment, state } = usePlan();
+  const { activeCommitment, state, findClub } = usePlan();
   const body = reminderBody(state.reminder, activeCommitment?.nextAction);
-  const club = activeCommitment ? clubById(activeCommitment.clubId) : undefined;
+  const club = activeCommitment ? findClub(activeCommitment.clubId) : undefined;
 
   return (
     <Screen
-      extraBottom={32}
       footer={
         body && activeCommitment ? (
-          <View style={styles.footerCol}>
+          <View style={styles.col}>
             <PrimaryButton
               label={PLAN_COPY.reminderWent}
               onPress={() => router.push(`/after/${activeCommitment.clubId}`)}
             />
-            <PrimaryButton
-              label={PLAN_COPY.reminderNotToday}
-              muted
-              onPress={() => router.replace('/home')}
-            />
+            <PrimaryButton label={PLAN_COPY.reminderNotToday} muted onPress={() => router.replace('/home')} />
           </View>
         ) : (
-          <PrimaryButton label="Back to this week" onPress={() => router.replace('/home')} />
+          <PrimaryButton label="Home" onPress={() => router.replace('/home')} />
         )
       }
     >
       <TextLink label="Back" onPress={() => router.back()} />
-      <FirstPassBadge />
-      <Text style={styles.title}>{PLAN_COPY.reminderTitle}</Text>
-      {club ? <Text style={styles.club}>{club.name}</Text> : null}
-
-      {body ? (
-        <>
-          <Text style={styles.body}>{body}</Text>
-          <Text style={styles.note}>{PLAN_COPY.reminderNote}</Text>
-        </>
-      ) : (
-        <Text style={styles.note}>{PLAN_COPY.reminderEmpty}</Text>
-      )}
+      <Title>Reminder</Title>
+      {club ? <Text style={styles.meta}>{club.name}</Text> : null}
+      <Text style={styles.body}>{body ?? PLAN_COPY.reminderEmpty}</Text>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontFamily: fonts.serif,
-    fontSize: 32,
-    lineHeight: 38,
-    color: colors.ink,
-  },
-  club: {
+  meta: {
     fontFamily: fonts.sans,
-    fontSize: 16,
-    fontWeight: '600',
-    color: colors.forest,
-  },
-  body: {
-    fontFamily: fonts.serif,
-    fontSize: 24,
-    lineHeight: 34,
-    color: colors.ink,
-    marginTop: 8,
-  },
-  note: {
-    fontFamily: fonts.sans,
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: 14,
     color: colors.muted,
   },
-  footerCol: {
-    gap: 10,
+  body: {
+    fontFamily: fonts.sans,
+    fontSize: 16,
+    lineHeight: 24,
+    color: colors.ink,
+  },
+  col: {
+    gap: 8,
   },
 });

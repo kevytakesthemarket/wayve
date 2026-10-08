@@ -1,27 +1,30 @@
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { ClubCard } from '@/components/ClubCard';
-import { FirstPassBadge } from '@/components/FirstPassBadge';
-import { Notice } from '@/components/Notice';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { TextLink } from '@/components/TextLink';
+import { Title } from '@/components/Title';
 import { useInterview } from '@/interview/context';
 import { PLAN_COPY } from '@/plan/copy';
 import { usePlan } from '@/plan/context';
 import { buildNextAction } from '@/plan/nextAction';
-import { weeklySlate } from '@/plan/slate';
-import { scorer } from '@/scoring';
-import { colors, fonts } from '@/theme/colors';
+import { personById, type PersonRow } from '@/plan/people';
 
 export default function HomeScreen() {
   const router = useRouter();
   const { state, reset, markStep } = useInterview();
-  const { state: plan, reset: resetPlan, commitIllGo, commitmentFor, activeCommitment } = usePlan();
-  const gap = scorer.emptyFacetNote(state);
-  const clubs = weeklySlate(undefined, plan.blockedClubIds);
+  const {
+    weekly,
+    peopleOpen,
+    reset: resetPlan,
+    commitIllGo,
+    commitmentFor,
+    activeCommitment,
+    isPersonBlocked,
+  } = usePlan();
 
   useEffect(() => {
     markStep('home');
@@ -29,17 +32,13 @@ export default function HomeScreen() {
 
   return (
     <Screen
-      extraBottom={32}
       footer={
-        <View style={styles.footerCol}>
+        <View style={styles.col}>
           {activeCommitment ? (
-            <PrimaryButton
-              label={PLAN_COPY.reminderLink}
-              onPress={() => router.push('/reminder')}
-            />
+            <PrimaryButton label="Reminder" onPress={() => router.push('/reminder')} />
           ) : null}
           <PrimaryButton
-            label="Start another first pass"
+            label="Start over"
             muted
             onPress={async () => {
               await resetPlan();
@@ -50,37 +49,27 @@ export default function HomeScreen() {
         </View>
       }
     >
-      <FirstPassBadge />
-      <Text style={styles.kicker}>{PLAN_COPY.homeKicker}</Text>
-      <Text style={styles.lead}>{PLAN_COPY.homeLead}</Text>
-      <Text style={styles.people}>{PLAN_COPY.homePeopleClosed}</Text>
+      <Title>Home</Title>
 
-      {state.publicCard ? (
-        <View style={styles.card}>
-          <Text style={styles.cardLabel}>Your card</Text>
-          <Text style={styles.cardBody}>{state.publicCard}</Text>
-          <TextLink label={PLAN_COPY.editCard} onPress={() => router.push('/card')} />
-        </View>
-      ) : (
-        <TextLink label={PLAN_COPY.editCard} onPress={() => router.push('/card')} />
-      )}
-
-      {gap ? <Notice text={gap} /> : null}
-
-      {clubs.length === 0 ? (
-        <Notice text="No clubs on this plan. Blocked rooms stay off the list — we will not invent a replacement." />
-      ) : null}
-
-      {clubs.map((club) => {
+      {weekly.map((club) => {
         const nextAction = buildNextAction(club, state);
-        const committed = Boolean(commitmentFor(club.id));
+        const alsoHere = peopleOpen
+          ? (club.also_at_meeting ?? [])
+              .map((id) => personById(id))
+              .filter((person): person is PersonRow => Boolean(person))
+              .filter((person) => !isPersonBlocked(person.id))
+          : [];
         return (
           <ClubCard
             key={club.id}
+            compact
             club={club}
             nextAction={nextAction}
-            committed={committed}
-            onIllGo={() => commitIllGo(club.id, nextAction)}
+            committed={Boolean(commitmentFor(club.id))}
+            alsoHere={alsoHere}
+            onIllGo={() => {
+              void commitIllGo(club.id, nextAction);
+            }}
             onOpen={() => router.push(`/club/${club.id}`)}
             onReport={() => router.push({ pathname: '/safety/report', params: { clubId: club.id } })}
             onBlock={() => router.push({ pathname: '/safety/block', params: { clubId: club.id } })}
@@ -88,64 +77,26 @@ export default function HomeScreen() {
         );
       })}
 
-      {activeCommitment ? (
-        <View style={styles.links}>
-          <TextLink
-            label={PLAN_COPY.afterLink}
-            onPress={() => router.push(`/after/${activeCommitment.clubId}`)}
-          />
-        </View>
-      ) : null}
+      <View style={styles.links}>
+        <TextLink label="Card" onPress={() => router.push('/card')} muted />
+        {activeCommitment ? (
+          <TextLink label="After" onPress={() => router.push(`/after/${activeCommitment.clubId}`)} muted />
+        ) : null}
+        <TextLink label={PLAN_COPY.officerLink} onPress={() => router.push('/officer')} muted />
+        <TextLink label={PLAN_COPY.campusLink} onPress={() => router.push('/campus')} muted />
+      </View>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  kicker: {
-    fontFamily: fonts.serif,
-    fontSize: 32,
-    lineHeight: 38,
-    color: colors.ink,
-  },
-  lead: {
-    fontFamily: fonts.sans,
-    fontSize: 17,
-    lineHeight: 26,
-    color: colors.muted,
-  },
-  people: {
-    fontFamily: fonts.sans,
-    fontSize: 15,
-    lineHeight: 22,
-    color: colors.forest,
-  },
-  card: {
-    backgroundColor: colors.card,
-    borderRadius: 14,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: colors.line,
-    gap: 8,
-  },
-  cardLabel: {
-    fontFamily: fonts.sans,
-    fontSize: 12,
-    fontWeight: '700',
-    color: colors.hint,
-    textTransform: 'uppercase',
-    letterSpacing: 0.4,
-  },
-  cardBody: {
-    fontFamily: fonts.serif,
-    fontSize: 16,
-    lineHeight: 24,
-    color: colors.ink,
-  },
   links: {
-    marginTop: 4,
-    gap: 8,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 16,
+    marginTop: 8,
   },
-  footerCol: {
-    gap: 10,
+  col: {
+    gap: 8,
   },
 });

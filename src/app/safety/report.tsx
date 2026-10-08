@@ -6,17 +6,23 @@ import { ExpandingText } from '@/components/ExpandingText';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { TextLink } from '@/components/TextLink';
+import { Title } from '@/components/Title';
 import { PLAN_COPY } from '@/plan/copy';
 import { usePlan } from '@/plan/context';
-import { clubById } from '@/plan/slate';
+import { personById } from '@/plan/people';
 import { colors, fonts } from '@/theme/colors';
 
 export default function ReportScreen() {
   const router = useRouter();
-  const { clubId } = useLocalSearchParams<{ clubId?: string }>();
-  const { reportClub, state } = usePlan();
-  const club = clubId ? clubById(clubId) : undefined;
-  const already = state.safety.some((item) => item.kind === 'report' && item.targetId === clubId);
+  const { clubId, personId } = useLocalSearchParams<{ clubId?: string; personId?: string }>();
+  const { reportTarget, reportClub, state, findClub } = usePlan();
+  const club = clubId ? findClub(clubId) : undefined;
+  const person = personId ? personById(personId) : undefined;
+  const targetId = person?.id ?? club?.id;
+  const targetType = person ? 'person' : 'club';
+  const already = state.safety.some(
+    (item) => item.kind === 'report' && item.targetId === targetId && item.targetType === targetType,
+  );
   const [reason, setReason] = useState('');
   const [done, setDone] = useState(already);
 
@@ -25,14 +31,15 @@ export default function ReportScreen() {
       extraBottom={32}
       footer={
         done ? (
-          <PrimaryButton label="Back to this week" onPress={() => router.replace('/home')} />
+          <PrimaryButton label="Home" onPress={() => router.replace('/home')} />
         ) : (
           <PrimaryButton
             label={PLAN_COPY.reportSubmit}
-            disabled={!club}
+            disabled={!targetId}
             onPress={() => {
-              if (!club) return;
-              reportClub(club.id, reason);
+              if (!targetId) return;
+              if (person) reportTarget('person', person.id, reason);
+              else if (club) reportClub(club.id, reason);
               setDone(true);
             }}
           />
@@ -40,9 +47,9 @@ export default function ReportScreen() {
       }
     >
       <TextLink label="Back" onPress={() => router.back()} />
-      <Text style={styles.title}>{PLAN_COPY.reportTitle}</Text>
-      <Text style={styles.lead}>{PLAN_COPY.reportLead}</Text>
-      {club ? <Text style={styles.club}>{club.name}</Text> : null}
+      <Title>Report</Title>
+      {person ? <Text style={styles.target}>{person.name}</Text> : null}
+      {club ? <Text style={styles.target}>{club.name}</Text> : null}
 
       {done ? (
         <Text style={styles.done}>{PLAN_COPY.reportDone}</Text>
@@ -58,28 +65,14 @@ export default function ReportScreen() {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontFamily: fonts.serif,
-    fontSize: 32,
-    lineHeight: 38,
-    color: colors.ink,
-  },
-  lead: {
+  target: {
     fontFamily: fonts.sans,
-    fontSize: 16,
-    lineHeight: 24,
+    fontSize: 14,
     color: colors.muted,
   },
-  club: {
-    fontFamily: fonts.sans,
-    fontSize: 16,
-    fontWeight: '600',
-    color: colors.forest,
-  },
   done: {
-    fontFamily: fonts.serif,
-    fontSize: 20,
-    lineHeight: 28,
+    fontFamily: fonts.sans,
+    fontSize: 14,
     color: colors.ink,
   },
 });

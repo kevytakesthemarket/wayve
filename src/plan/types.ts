@@ -1,4 +1,5 @@
 export type SafetyKind = 'report' | 'block';
+export type SafetyTarget = 'club' | 'person';
 
 /**
  * Club row for the weekly plan.
@@ -45,7 +46,7 @@ export interface AfterVisitRecord {
 export interface SafetyRecord {
   id: string;
   kind: SafetyKind;
-  targetType: 'club';
+  targetType: SafetyTarget;
   targetId: string;
   reason: string;
   createdAt: number;
@@ -55,6 +56,9 @@ export interface ArmedReminder {
   clubId: string;
   nextAction: string;
   armedAt: number;
+  notificationId?: string | null;
+  scheduledFor?: number | null;
+  notificationReason?: 'web' | 'denied' | 'unavailable';
 }
 
 export interface PlanState {
@@ -63,6 +67,7 @@ export interface PlanState {
   visits: AfterVisitRecord[];
   safety: SafetyRecord[];
   blockedClubIds: string[];
+  blockedPersonIds: string[];
   reminder: ArmedReminder | null;
 }
 
@@ -73,6 +78,7 @@ export function initialPlanState(): PlanState {
     visits: [],
     safety: [],
     blockedClubIds: [],
+    blockedPersonIds: [],
     reminder: null,
   };
 }
