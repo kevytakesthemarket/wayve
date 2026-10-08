@@ -22,19 +22,19 @@ function RootNav() {
   if (!bootReady) {
     return (
       <View style={{ flex: 1, backgroundColor: colors.paper, alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator color={colors.forest} />
+        <ActivityIndicator color={colors.ink} />
       </View>
     );
   }
 
   return (
     <>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <Stack
         screenOptions={{
           headerShown: false,
           contentStyle: { backgroundColor: colors.paper },
-          animation: 'slide_from_right',
+          animation: 'none',
         }}
       />
     </>

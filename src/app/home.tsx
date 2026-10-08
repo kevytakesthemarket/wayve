@@ -1,20 +1,17 @@
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { ClubCard } from '@/components/ClubCard';
-import { FirstPassBadge } from '@/components/FirstPassBadge';
-import { Notice } from '@/components/Notice';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { TextLink } from '@/components/TextLink';
+import { Title } from '@/components/Title';
 import { useInterview } from '@/interview/context';
 import { PLAN_COPY } from '@/plan/copy';
 import { usePlan } from '@/plan/context';
 import { buildNextAction } from '@/plan/nextAction';
 import { personById, type PersonRow } from '@/plan/people';
-import { scorer } from '@/scoring';
-import { colors, fonts } from '@/theme/colors';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -28,7 +25,6 @@ export default function HomeScreen() {
     activeCommitment,
     isPersonBlocked,
   } = usePlan();
-  const gap = scorer.emptyFacetNote(state);
 
   useEffect(() => {
     markStep('home');
@@ -36,14 +32,10 @@ export default function HomeScreen() {
 
   return (
     <Screen
-      extraBottom={24}
       footer={
-        <View style={styles.footerCol}>
+        <View style={styles.col}>
           {activeCommitment ? (
-            <PrimaryButton
-              label={PLAN_COPY.reminderLink}
-              onPress={() => router.push('/reminder')}
-            />
+            <PrimaryButton label="Reminder" onPress={() => router.push('/reminder')} />
           ) : null}
           <PrimaryButton
             label="Start over"
@@ -57,20 +49,10 @@ export default function HomeScreen() {
         </View>
       }
     >
-      <View style={styles.top}>
-        <FirstPassBadge />
-        <Text style={styles.kicker}>{PLAN_COPY.homeKicker}</Text>
-      </View>
-
-      {gap ? <Notice text={gap} /> : null}
-
-      {weekly.length === 0 ? (
-        <Notice text="No clubs this week. Blocked rooms stay off — we will not invent a replacement." />
-      ) : null}
+      <Title>Home</Title>
 
       {weekly.map((club) => {
         const nextAction = buildNextAction(club, state);
-        const committed = Boolean(commitmentFor(club.id));
         const alsoHere = peopleOpen
           ? (club.also_at_meeting ?? [])
               .map((id) => personById(id))
@@ -83,7 +65,7 @@ export default function HomeScreen() {
             compact
             club={club}
             nextAction={nextAction}
-            committed={committed}
+            committed={Boolean(commitmentFor(club.id))}
             alsoHere={alsoHere}
             onIllGo={() => {
               void commitIllGo(club.id, nextAction);
@@ -96,15 +78,9 @@ export default function HomeScreen() {
       })}
 
       <View style={styles.links}>
-        {state.publicCard ? (
-          <TextLink label={PLAN_COPY.editCard} onPress={() => router.push('/card')} muted />
-        ) : null}
+        <TextLink label="Card" onPress={() => router.push('/card')} muted />
         {activeCommitment ? (
-          <TextLink
-            label={PLAN_COPY.afterLink}
-            onPress={() => router.push(`/after/${activeCommitment.clubId}`)}
-            muted
-          />
+          <TextLink label="After" onPress={() => router.push(`/after/${activeCommitment.clubId}`)} muted />
         ) : null}
         <TextLink label={PLAN_COPY.officerLink} onPress={() => router.push('/officer')} muted />
         <TextLink label={PLAN_COPY.campusLink} onPress={() => router.push('/campus')} muted />
@@ -114,21 +90,13 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  top: {
-    gap: 10,
-    marginBottom: 4,
-  },
-  kicker: {
-    fontFamily: fonts.serif,
-    fontSize: 28,
-    lineHeight: 34,
-    color: colors.ink,
-  },
   links: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 16,
     marginTop: 8,
-    gap: 10,
   },
-  footerCol: {
-    gap: 10,
+  col: {
+    gap: 8,
   },
 });

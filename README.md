@@ -4,7 +4,7 @@ Campus friends + clubs for college students. Not dating.
 
 This repo is the v1 Expo app Kevin can tap through in Expo Go: school-email gate, first-session interview, clubs-only weekly plan, I'll go → if-then, day-of reminder, after-visit, report/block. An interview stays private. Other students only see a short public card the student edits. A later LLM can swap in for matching; v1 scores locally so it works offline. Club commitments are local too, with a swap point for Supabase later.
 
-Visual: dark campus canvas, purple accents (wayve.bio palette) — still friends+clubs, not FreedomFest / dating chrome.
+This checkout is a **working skeleton**: same locked routes and behavior, gray boxes and short labels, no designed chrome. Visual polish comes later.
 
 The leftover `halftone-waves-app.zip` on `main` is unused. Ignore it.
 
@@ -35,13 +35,11 @@ Web (layout check only): `npm run web`. Local notifications do not fire on web; 
 
 School-email signup (~45s, `.edu` required) → easy taps → three example profiles → belonging scene → last Thursday → optional third question (club-fit **or** friendship-shape) → member-check → public card → unlock (**3 clubs**, not 3 people) → home weekly plan.
 
-Home is clubs only:
+Home is clubs only (skeleton cards):
 
-- First-pass label
 - 1–3 club cards this week (exactly 3 when a slate exists; one is drop-in / low commitment)
-- Each card: name, `first_15_script`, stay/leave, weekly hours / next meeting, `not_fit_if`, one if-then `next_action`
+- Each card: name, next meeting, if-then `next_action`. Full club fields live on `/club/[id]`.
 - **I'll go** writes that same if-then. No Say hi. No message box.
-- Honest gap line when a facet is empty
 - People stay off home until ~40–60 interviews exist on the campus (Campus settings can simulate 50). Then a club may show **also at this meeting** — never a people grid, never a DM.
 
 After I'll go:

@@ -12,14 +12,15 @@ export function Notice({ text }: { text: string }) {
 
 const styles = StyleSheet.create({
   box: {
-    backgroundColor: colors.warningWash,
-    borderRadius: 12,
-    padding: 14,
+    backgroundColor: colors.paperDeep,
+    borderWidth: 1,
+    borderColor: colors.line,
+    borderRadius: 6,
+    padding: 12,
   },
   text: {
-    color: colors.warning,
+    color: colors.ink,
     fontFamily: fonts.sans,
-    fontSize: 15,
-    lineHeight: 21,
+    fontSize: 14,
   },
 });

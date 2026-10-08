@@ -18,13 +18,7 @@ export function PrimaryButton({
       accessibilityRole="button"
       onPress={onPress}
       disabled={disabled}
-      style={({ pressed }) => [
-        styles.btn,
-        muted && styles.muted,
-        disabled && styles.disabled,
-        pressed && !disabled && !muted && styles.pressed,
-        pressed && !disabled && muted && styles.mutedPressed,
-      ]}
+      style={[styles.btn, muted && styles.muted, disabled && styles.disabled]}
     >
       <Text style={[styles.label, muted && styles.mutedLabel]}>{label}</Text>
     </Pressable>
@@ -33,31 +27,24 @@ export function PrimaryButton({
 
 const styles = StyleSheet.create({
   btn: {
-    backgroundColor: colors.forestDeep,
-    borderRadius: 14,
-    paddingVertical: 16,
-    paddingHorizontal: 18,
+    backgroundColor: colors.ink,
+    borderRadius: 6,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
     alignItems: 'center',
-    cursor: 'pointer',
   },
   muted: {
     backgroundColor: colors.card,
     borderWidth: 1,
     borderColor: colors.line,
   },
-  mutedPressed: {
-    backgroundColor: colors.paperDeep,
-  },
   disabled: {
-    opacity: 0.4,
-  },
-  pressed: {
-    backgroundColor: '#5B21B6',
+    opacity: 0.35,
   },
   label: {
     color: colors.cream,
     fontFamily: fonts.sans,
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
   },
   mutedLabel: {

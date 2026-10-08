@@ -21,13 +21,10 @@ export function TextLink({
 const styles = StyleSheet.create({
   link: {
     fontFamily: fonts.sans,
-    fontSize: 15,
-    lineHeight: 22,
-    color: colors.forest,
-    fontWeight: '600',
+    fontSize: 14,
+    color: colors.ink,
   },
   muted: {
     color: colors.muted,
-    fontWeight: '500',
   },
 });

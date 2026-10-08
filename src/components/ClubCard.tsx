@@ -16,8 +16,6 @@ export function ClubCard({
   onReport,
   onBlock,
   alsoHere = [],
-  onReportPerson,
-  onBlockPerson,
   compact = false,
 }: {
   club: Club;
@@ -34,69 +32,32 @@ export function ClubCard({
 }) {
   return (
     <View style={styles.card}>
-      <View style={styles.head}>
-        {onOpen ? (
-          <Pressable onPress={onOpen} accessibilityRole="button" style={styles.headText}>
-            <Text style={styles.name}>{club.name}</Text>
-            <Text style={styles.when}>{club.next_meeting}</Text>
-          </Pressable>
-        ) : (
-          <View style={styles.headText}>
-            <Text style={styles.name}>{club.name}</Text>
-            <Text style={styles.when}>{club.next_meeting}</Text>
-          </View>
-        )}
-        {club.drop_in_ok ? <Text style={styles.drop}>Drop-in</Text> : null}
-      </View>
-
-      {compact ? (
-        <Text style={styles.body} numberOfLines={3}>
-          {club.first_15_script}
-        </Text>
+      {onOpen ? (
+        <Pressable onPress={onOpen} accessibilityRole="button">
+          <Text style={styles.name}>{club.name}</Text>
+        </Pressable>
       ) : (
-        <>
-          <Field label={PLAN_COPY.first15} body={club.first_15_script} />
-          <Field label={PLAN_COPY.stayLeave} body={club.stay_leave} />
-          <Field label={PLAN_COPY.thisWeek} body={club.weekly_hours} />
-          <Field label={PLAN_COPY.notFit} body={club.not_fit_if} />
-        </>
+        <Text style={styles.name}>{club.name}</Text>
       )}
-
-      <Text style={styles.next}>{nextAction}</Text>
-
+      <Text style={styles.meta}>
+        {club.next_meeting}
+        {club.drop_in_ok ? ' · drop-in' : ''}
+      </Text>
+      {!compact ? <Text style={styles.meta} numberOfLines={2}>{club.first_15_script}</Text> : null}
+      <Text style={styles.meta} numberOfLines={2}>
+        {nextAction}
+      </Text>
       {alsoHere.length ? (
-        <View style={styles.alsoWrap}>
-          <Text style={styles.alsoLine}>
-            {PLAN_COPY.alsoAt}: {alsoHere.map((person) => person.name).join(', ')}
-          </Text>
-          {!compact
-            ? alsoHere.map((person) => (
-                <View key={person.id} style={styles.person}>
-                  <Text style={styles.personNote}>{person.note}</Text>
-                  {onReportPerson || onBlockPerson ? (
-                    <View style={styles.row}>
-                      {onReportPerson ? (
-                        <TextLink label={PLAN_COPY.safetyLink} onPress={() => onReportPerson(person.id)} muted />
-                      ) : null}
-                      {onBlockPerson ? (
-                        <TextLink label={PLAN_COPY.blockLink} onPress={() => onBlockPerson(person.id)} muted />
-                      ) : null}
-                    </View>
-                  ) : null}
-                </View>
-              ))
-            : null}
-        </View>
+        <Text style={styles.meta}>
+          {PLAN_COPY.alsoAt}: {alsoHere.map((person) => person.name).join(', ')}
+        </Text>
       ) : null}
-
       {committed ? (
         <Text style={styles.done}>{PLAN_COPY.illGoDone}</Text>
       ) : (
         <PrimaryButton label={PLAN_COPY.illGo} onPress={onIllGo} />
       )}
-
       <View style={styles.row}>
-        {onOpen && compact ? <TextLink label="More" onPress={onOpen} muted /> : null}
         {onReport ? <TextLink label={PLAN_COPY.safetyLink} onPress={onReport} muted /> : null}
         {onBlock ? <TextLink label={PLAN_COPY.blockLink} onPress={onBlock} muted /> : null}
       </View>
@@ -104,100 +65,31 @@ export function ClubCard({
   );
 }
 
-function Field({ label, body }: { label: string; body: string }) {
-  return (
-    <View style={styles.field}>
-      <Text style={styles.label}>{label}</Text>
-      <Text style={styles.body}>{body}</Text>
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.card,
-    borderRadius: 16,
-    padding: 18,
     borderWidth: 1,
     borderColor: colors.line,
-    gap: 12,
-  },
-  head: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    gap: 10,
-  },
-  headText: {
-    flex: 1,
-    gap: 4,
-  },
-  name: {
-    fontFamily: fonts.serif,
-    fontSize: 22,
-    lineHeight: 28,
-    color: colors.ink,
-  },
-  when: {
-    fontFamily: fonts.sans,
-    fontSize: 14,
-    lineHeight: 20,
-    color: colors.muted,
-  },
-  drop: {
-    fontFamily: fonts.sans,
-    fontSize: 11,
-    fontWeight: '700',
-    letterSpacing: 0.3,
-    color: colors.forest,
-    marginTop: 4,
-  },
-  field: {
-    gap: 4,
-  },
-  label: {
-    fontFamily: fonts.sans,
-    fontSize: 11,
-    fontWeight: '700',
-    color: colors.hint,
-    letterSpacing: 0.4,
-    textTransform: 'uppercase',
-  },
-  body: {
-    fontFamily: fonts.sans,
-    fontSize: 15,
-    lineHeight: 22,
-    color: colors.ink,
-  },
-  next: {
-    fontFamily: fonts.serif,
-    fontSize: 16,
-    lineHeight: 24,
-    color: colors.forest,
-  },
-  alsoWrap: {
+    borderRadius: 6,
+    padding: 12,
     gap: 8,
   },
-  alsoLine: {
+  name: {
     fontFamily: fonts.sans,
-    fontSize: 14,
-    lineHeight: 20,
-    color: colors.muted,
+    fontSize: 16,
+    fontWeight: '700',
+    color: colors.ink,
   },
-  person: {
-    gap: 4,
-  },
-  personNote: {
+  meta: {
     fontFamily: fonts.sans,
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 13,
+    lineHeight: 18,
     color: colors.muted,
   },
   done: {
     fontFamily: fonts.sans,
-    fontSize: 15,
-    lineHeight: 22,
-    color: colors.forest,
+    fontSize: 14,
+    color: colors.ink,
   },
   row: {
     flexDirection: 'row',

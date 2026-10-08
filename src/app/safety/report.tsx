@@ -6,6 +6,7 @@ import { ExpandingText } from '@/components/ExpandingText';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { TextLink } from '@/components/TextLink';
+import { Title } from '@/components/Title';
 import { PLAN_COPY } from '@/plan/copy';
 import { usePlan } from '@/plan/context';
 import { personById } from '@/plan/people';
@@ -30,7 +31,7 @@ export default function ReportScreen() {
       extraBottom={32}
       footer={
         done ? (
-          <PrimaryButton label="This week" onPress={() => router.replace('/home')} />
+          <PrimaryButton label="Home" onPress={() => router.replace('/home')} />
         ) : (
           <PrimaryButton
             label={PLAN_COPY.reportSubmit}
@@ -46,16 +47,14 @@ export default function ReportScreen() {
       }
     >
       <TextLink label="Back" onPress={() => router.back()} />
-      <Text style={styles.title}>{PLAN_COPY.reportTitle}</Text>
-      <Text style={styles.lead}>{PLAN_COPY.reportLead}</Text>
-      {person ? <Text style={styles.club}>{person.name}</Text> : null}
-      {club ? <Text style={styles.club}>{club.name}</Text> : null}
+      <Title>Report</Title>
+      {person ? <Text style={styles.target}>{person.name}</Text> : null}
+      {club ? <Text style={styles.target}>{club.name}</Text> : null}
 
       {done ? (
         <Text style={styles.done}>{PLAN_COPY.reportDone}</Text>
       ) : (
         <ExpandingText
-          compact
           value={reason}
           onChangeText={setReason}
           placeholder={PLAN_COPY.reportPlaceholder}
@@ -66,28 +65,14 @@ export default function ReportScreen() {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontFamily: fonts.serif,
-    fontSize: 28,
-    lineHeight: 34,
-    color: colors.ink,
-  },
-  lead: {
+  target: {
     fontFamily: fonts.sans,
-    fontSize: 16,
-    lineHeight: 24,
+    fontSize: 14,
     color: colors.muted,
   },
-  club: {
-    fontFamily: fonts.sans,
-    fontSize: 16,
-    fontWeight: '600',
-    color: colors.forest,
-  },
   done: {
-    fontFamily: fonts.serif,
-    fontSize: 20,
-    lineHeight: 28,
+    fontFamily: fonts.sans,
+    fontSize: 14,
     color: colors.ink,
   },
 });

@@ -6,7 +6,6 @@ export function ExpandingText({
   value,
   onChangeText,
   placeholder,
-  compact,
 }: {
   value: string;
   onChangeText: (text: string) => void;
@@ -21,33 +20,24 @@ export function ExpandingText({
       placeholderTextColor={colors.hint}
       multiline
       textAlignVertical="top"
-      scrollEnabled
-      autoCorrect
-      autoCapitalize="sentences"
-      style={[styles.input, compact && styles.compact]}
+      style={styles.input}
     />
   );
 }
 
 const styles = StyleSheet.create({
   input: {
-    minHeight: 168,
-    maxHeight: 320,
+    minHeight: 88,
     backgroundColor: colors.card,
     borderWidth: 1,
     borderColor: colors.line,
-    borderRadius: 16,
-    paddingHorizontal: 16,
-    paddingTop: 14,
-    paddingBottom: 14,
+    borderRadius: 6,
+    paddingHorizontal: 12,
+    paddingTop: 10,
+    paddingBottom: 10,
     fontFamily: fonts.sans,
-    fontSize: 17,
-    lineHeight: 24,
+    fontSize: 15,
+    lineHeight: 22,
     color: colors.ink,
-  },
-  compact: {
-    minHeight: 96,
-    maxHeight: 180,
-    borderRadius: 12,
   },
 });
